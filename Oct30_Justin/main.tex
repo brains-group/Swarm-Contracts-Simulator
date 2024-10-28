@@ -16,69 +16,69 @@
 %----------------------------------------------------------------------------------------
 
 % \title[A Short Title for Your Slides]{A Very Long and Multi-Lined Full Presentation Title That You Probably Shouldn't Use Because Titles Should not be This Long, but I Will Do It For Debugging} 
-\title[A Short Title for Your Slides]{(Unofficial)\\RPI Beamer Presentation Template}
-\subtitle{Optional Subtitle} % Presentation subtitle, remove this command if a subtitle isn't required
-\author[]{Inwon Kang \and StackOverflow} % Presenter name(s), the optional parameter can contain a shortened version to appear on the bottom of every slide, while the main parameter will appear on the title slide
+\title[Swarm Contracts Simulator]{Swarm Contracts Simulator}
+% \subtitle{Optional Subtitle} % Presentation subtitle, remove this command if a subtitle isn't required
+\author[]{Justin Ottesen} % Presenter name(s), the optional parameter can contain a shortened version to appear on the bottom of every slide, while the main parameter will appear on the title slide
 \institute[RPI]{Department of Computer Science}
 
-\date[\today]{\today}
+\date[October 30, 2024]{October 30, 2024}
 
-% NOTE: Comment this out if you don't want it
-\AtBeginSection[]{
-	\begin{frame}[noframenumbering]
-		\frametitle{Outline}
-		\begin{columns}[t]
-			\begin{column}{.05\textwidth}\end{column}
-			\begin{column}{.45\textwidth}
-				\tableofcontents[
-					currentsection,
-					% sectionstyle=show/hide,
-					subsectionstyle=hide/show/hide,
-					sections={-3},
-				]
-			\end{column}
-			\begin{column}{.45\textwidth}
-				\tableofcontents[
-					currentsection,
-					% sectionstyle=show/hide,
-					subsectionstyle=hide/show/hide,
-					sections={4-},
-				]
-			\end{column}
-		\end{columns}
-		% NOTE: If you don't want them to affect the slide number
-		% \addtocounter{framenumber}{-1}
-	\end{frame}
-}
+% % NOTE: Comment this out if you don't want it
+% \AtBeginSection[]{
+% 	\begin{frame}[noframenumbering]
+% 		\frametitle{Outline}
+% 		\begin{columns}[t]
+% 			\begin{column}{.05\textwidth}\end{column}
+% 			\begin{column}{.45\textwidth}
+% 				\tableofcontents[
+% 					currentsection,
+% 					% sectionstyle=show/hide,
+% 					subsectionstyle=hide/show/hide,
+% 					sections={-3},
+% 				]
+% 			\end{column}
+% 			\begin{column}{.45\textwidth}
+% 				\tableofcontents[
+% 					currentsection,
+% 					% sectionstyle=show/hide,
+% 					subsectionstyle=hide/show/hide,
+% 					sections={4-},
+% 				]
+% 			\end{column}
+% 		\end{columns}
+% 		% NOTE: If you don't want them to affect the slide number
+% 		% \addtocounter{framenumber}{-1}
+% 	\end{frame}
+% }
 
-% NOTE: Comment this out if you don't want it
-\AtBeginSubsection[]{
-	\begin{frame}[noframenumbering]
-		\frametitle{Outline}
-		\begin{columns}[t]
-			\begin{column}{.05\textwidth}
-			\end{column}
-			\begin{column}{.45\textwidth}
-				\tableofcontents[
-					currentsection,
-					currentsubsection,
-					% sectionstyle=show/hide,
-					% subsectionstyle=show/hide,
-					sections={-3},
-				]
-			\end{column}
-			\begin{column}{.45\textwidth}
-				\tableofcontents[
-					currentsection,
-					currentsubsection,
-					% sectionstyle=show/hide,
-					% subsectionstyle=show/hide,
-					sections={4-},
-				]
-			\end{column}
-		\end{columns}
-	\end{frame}
-}
+% % NOTE: Comment this out if you don't want it
+% \AtBeginSubsection[]{
+% 	\begin{frame}[noframenumbering]
+% 		\frametitle{Outline}
+% 		\begin{columns}[t]
+% 			\begin{column}{.05\textwidth}
+% 			\end{column}
+% 			\begin{column}{.45\textwidth}
+% 				\tableofcontents[
+% 					currentsection,
+% 					currentsubsection,
+% 					% sectionstyle=show/hide,
+% 					% subsectionstyle=show/hide,
+% 					sections={-3},
+% 				]
+% 			\end{column}
+% 			\begin{column}{.45\textwidth}
+% 				\tableofcontents[
+% 					currentsection,
+% 					currentsubsection,
+% 					% sectionstyle=show/hide,
+% 					% subsectionstyle=show/hide,
+% 					sections={4-},
+% 				]
+% 			\end{column}
+% 		\end{columns}
+% 	\end{frame}
+% }
 
 \begin{document}
 % NOTE: Plain is what blocks the footline from showing up on the title page
@@ -101,16 +101,14 @@
 		\end{column}
 		\begin{column}{.45\textwidth}
 			\tableofcontents[
-				pausesections,
-				sections={-3}
+				sections={-2}
 			]
 		\end{column}
 		\begin{column}<+->{.45\textwidth}
 			\only<.>{\setcounter{tocseccounter}{\slideinframe}}
 			\advanceslidecounter{-\thetocseccounter}
 			\tableofcontents[
-				pausesections,
-				sections={4-}
+				sections={3-}
 			]
 		\end{column}
 	\end{columns}
@@ -124,184 +122,399 @@
 %----------------------------------------------------------------------------------------
 
 \section{Introduction}
+\frame{\sectionpage}
+
+\subsection{Previous Work}
 \begin{frame}
-	\frametitle{Introduction} % Slide title, remove this command for no title
-	\framesubtitle{A subtitle}
+	\frametitle{Previous Work}
+	\framesubtitle{Introduction}
+
 	{
-		\Large \bf
-		What is this?
+		\large \bf
+		Previous Work
 	}
-
-	A template for beamer presentations.
-	I made this template following RPI's official powerpoint template and logos~\cite{rpiHomeStrategicCommunications}.
-
-	\vspace{1cm}
-	{
-		\Large \bf
-		Why did I do this?
-	}
-
-	I couldn't find an existing one and I didn't want to copy over citations manually.
-
-\end{frame}
-
-\section{Table of Contents}
-\begin{frame}
-	\frametitle{Table of Contents}
 	\begin{itemize}
-		\item You already saw the table of contents.
-		\item By default, it is in one column. If you want to divide it to multiple columns, you can use minipage or columns~\cite{samcarter_is_at_topanswers.xyzAnswerBeamerVertical2013}
-		\item To make use of this, you need to use sections, which should be placed outside of the frame~\cite{campaAnswerAtbeginsectionReturns2022}.
-		\item Use \texttt{AtBeginSection} to automatically show the table of contents at the beginning of each section.
+		\item Idea introduced: decentralized trustless payment for completion of work \cite{grey2020orig}
+		\item Specific application in simulated robot warehouse environment \cite{grey2021warehouseSim}
+		\item Physical implementation of previous simulation \cite{mallikarachchi2022warehouseReal}
+		\item Full test of swarm contracts in different application, crowd sourcing map data \cite{mallikarachchi2023maps}
+		\item Exploration of trust levels by Aarnav
+	\end{itemize}
+
+	\medskip
+
+	{
+		\large \bf
+		Shortcomings
+	}
+	\begin{itemize}
+		\item Certain parties are exempt from economic incentives, assumed to be trusted
+		\item All systems use specific applications, no generality for comparison
+		\item Arbitrary choices are made without strong reasoning
 	\end{itemize}
 \end{frame}
 
-
-\section{List/Figure/Table}
-\subsection{Lists}
+\subsection{My Goals}
 \begin{frame}
-	\frametitle{Using lists}
-	Simple example of using lists.
+	\frametitle{My Goals}
+	\framesubtitle{Introduction}
+
+	{
+		\large \bf
+		Simplified Problem Statement
+	}
+
+	\smallskip
+
+	How do we design a general protocol to orchestrate payment for work where no parties have a pre-existing relationship?
+
+	\medskip	
+
+	{
+		\large \bf
+		Step 1: Design a Protocol with the following Criteria
+	}
 	\begin{itemize}
-		\item Item 1.
-		\item Item 2.
+		\item \textbf{Simple}: solves the problem without unnecessary complication
+		\item \textbf{General}: applies to any scenario, not application specific
+		\item \textbf{Self Driven}: no external drivers\footnote{Technically needs two: Agents motivated by \textbf{Profit}, and \textbf{Jobs} which can generate this profit}, protocol is self-sufficient
+		\item \textbf{Trustless}: no prior level of trust or knowledge required for participants
+		\item \textbf{Resilient}: resists and disincentivizes bad actors
 	\end{itemize}
 
+	\medskip
+
+	{
+		\large \bf
+		Step 2: Efficiently measure \& compare performance of protocols
+	}
+\end{frame}
+
+\section{Defining the Protocol}
+\frame{\sectionpage}
+\subsection{Agents \& Incentives}
+\begin{frame}
+	\frametitle{Agents \& Incentives}
+	\framesubtitle{Defining the Protocol}
+
+	{
+		\large \bf
+		System Assumptions
+	}
 	\begin{enumerate}
-		\setlength{\leftmargini}{12pt}
-		\item Enumerate 1
-		\item Enumerate 2
+		\item There is a set of agents $\mathcal{A}$ and a set of jobs $\mathcal{J}$
+		\item For each agent $a$ and job $j$, there is some cost $c_a(j)$ and reward $r_a(j)$
+		\item An agent $a$ will complete a job $j$ if and only if $r_a(j) > c_a(j)$
+		\item Only one agent can complete the job, and only that agent will receive the reward.
 	\end{enumerate}
-	I think this looks pretty similar to how the powerpoint one looks.
+
+	\medskip
+
+	{
+		\large \bf
+		Observations
+	}
+	
+	\smallskip
+
+	The profit of a job $j$ for an agent $a$ is given by: $ p_a(j) = \max(0, r_a(j) - c_a(j)) $ 
+
+	\smallskip
+
+	The total profit for an agent is the sum of the profit of all jobs\footnote{Notation is simplified here by assuming each job has at most one profitable agent. The same idea holds if each job is only completed by one agent, it just complicates the notation}: $ P_a = \sum_{j \in \mathcal{J}} p_a(j)$
+
+	\smallskip
+
+	The total profit of a system is the sum of the profit of all agents: $ P = \sum_{a \in \mathcal{A}} P_a $
+
 \end{frame}
 
-\subsection{Figures}
+\subsection{Missed Profit}
 \begin{frame}
-	\frametitle{Using figures}
-	Here is an example of a figure.
-	\begin{figure}
-		\centering
-		\begin{minipage}{.5\textwidth}
-			\centering
-			\includegraphics[width=.7\linewidth]{example-image-a}
-			\caption{A subfigure}
-		\end{minipage}%
-		\begin{minipage}{.5\textwidth}
-			\centering
-			\includegraphics[width=.7\linewidth]{example-image-b}
-			\caption{Another subfigure}
-		\end{minipage}
-		\caption{Example of a figure side by side.}
-	\end{figure}
+	\frametitle{Missed Profit}
+	\framesubtitle{Defining the Protocol}
+
+	Consider $\mathcal{A} = \{ a_1, a_2 \}$, $\mathcal{J} = \{ j \}$, and $r_{a_1}(j) < c_{a_1}(j) < r_{a_2}(j) < c_{a_2}(j)$:
+	\begin{eqnarray*}
+		p_{a_1}(j) &=& \max(0, r_{a_1}(j) - c_{a_1}(j)) = 0 \\
+		p_{a_2}(j) &=& \max(0, r_{a_2}(j) - c_{a_2}(j)) = 0 \\
+		P(j) &=& 0
+	\end{eqnarray*}
+	However, consider the profit if $a_1$ completed the job, and $a_2$ collected the reward?
+	\begin{eqnarray*}
+		P(j) &=& \max(0, r_{a_2}(j) - c_{a_1}(j)) = r_{a_2}(j) - c_{a_1}(j) \\
+		&=& r_{a_2}(j) - c_{a_1}(j) > 0
+	\end{eqnarray*}
+	This extracts more profit out of the same system, how do we incentivize this?
 \end{frame}
 
-\subsection{Figures in Full Screen}
+\subsection{Profit Sharing}
 \begin{frame}
-	\frametitle{Using a full screen image}
-	Next slide shows how to use an image in full screen.
-	I got this from
-	\href{
-		https://tex.stackexchange.com/questions/3915/image-on-full-slide-in-beamer-package
-	}{\color{RPIred}\underline{here}}
+	\frametitle{Profit Sharing}
+	\framesubtitle{Defining the Protocol}
+
+	The profit of the previous job is $P(j) = r_{a_2}(j) - c_{a_1}(j)$. However: $$ p_{a_1}(j) = -c_{a_1}(j) < 0 \hspace{1cm} p_{a_2}(j) = r_{a_2}(j) > 0 $$
+	For $a_1$ to complete this job, $a_2$ must share some portion of the profit, $s$, such that $c_{a_1}(j) < s < r_{a_2}(j)$, otherwise either $a_1$ or $a_2$ would not find this scenario profitable.
+
+	\medskip
+
+	This is the foundation of Swarm Contracts:
+	\begin{enumerate}
+		\item Two agents have different costs for completing a job
+		\item Value can be produced by connecting these agents
+		\item If these agents have no prior relationship, how can they trust each other?
+	\end{enumerate}
+	\begin{center}
+		\textbf{SOLUTION:} Don't trust each other, trust a protocol
+	\end{center}
 \end{frame}
 
-{
-\usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{example-image-a}}
-\begin{frame}[plain]
-\end{frame}
-}
-
-\subsection{Tables}
+\subsection{Blockchain \& Smart Contracts}
 \begin{frame}
-	\frametitle{A Table}
-	\centering
-	\begin{minipage}{0.3\linewidth}
-		\begin{table}
-			\centering
-			{\small
-				\begin{tabular}[c]{lll}
-					\toprule
-					\textbf{Col 1} & \textbf{Col 2} & \textbf{Col 3} \\ \midrule
-					a              & b              & c              \\
-					d              & e              & f              \\
-					\bottomrule
-				\end{tabular}
-			}
-			\caption{An example table}
-			\label{tab:}
-		\end{table}
-	\end{minipage}
-	\begin{minipage}{0.6\linewidth}
-		\textbf{Findings}\par
+	\frametitle{Blockchain \& Smart Contracts}
+	\framesubtitle{Defining the Protocol}
+
+	{
+		\large \bf
+		Ensuring both Payment and Work
+	}
+	\begin{itemize}
+		\item \textbf{Problem:} Whether payment or work is done first, the incentive for doing the other is gone
+		\item \textbf{Solution:} Trusted third party to distribute payment, in the form of a \textbf{Smart Contract}
+	\end{itemize}
+
+	\medskip
+
+	{
+		\large \bf
+		Judging Completion of Work
+	}
+	\begin{itemize}
+		\item \textbf{Problem:} Smart contracts are stupid, how can it know if a job is actually completed?
+		\item \textbf{Solution:} Simplify the contract by having \textbf{adjudicators} vote on completion, contract just has to check what majority voted for
+	\end{itemize}
+
+	\medskip
+
+	{
+		\large \bf
+		Incentivizing Adjudicators
+	}
+	\begin{itemize}
+		\item \textbf{Problem:} Adjudicators need an incentive to properly judge work
+		\item \textbf{Solution:} Adjudicators get a portion of the reward for voting with the majority
+	\end{itemize}
+\end{frame}
+
+\subsection{Solving Other Problems}
+\begin{frame}
+	\frametitle{Solving Other Problems}
+	\framesubtitle{Defining the Protocol}
+
+	{
+		\large \bf
+		Preventing Freeloading
+	}
+	\begin{itemize}
+		\item \textbf{Problem:} Workers \& Adjudicators can pick up many contracts with no intent to complete them
+		\item \textbf{Solution:} Collateral required to accept a contract either as worker or adjudicator
+	\end{itemize}
+
+	\medskip
+
+	{
+		\large \bf
+		Worker or Client Collusion with Adjudicators
+	}
+	\begin{itemize}
+		\item \textbf{Problem:} Adjudicators can vote in favor of known workers / clients
+		\item \textbf{Solution:} Application period, after which applicants are randomly selected
+	\end{itemize}
+
+	\medskip
+
+	{
+		\large \bf
+		Adjudicator Collusion
+	}
+	\begin{itemize}
+		\item \textbf{Problem:} If adjudicators know who each other are, they can plan to vote together
+		\item \textbf{Solution:} Verifiable Random Functions - \textbf{NEED MORE RESEARCH INTO THIS}
+	\end{itemize}
+\end{frame}
+
+\subsection{Final Protocol}
+\begin{frame}
+	\frametitle{Final Protocol}
+	\framesubtitle{Defining the Protocol}
+	{
+		\large \bf Process
+	}
+	\begin{enumerate}
+		\item Client identifies a job to be done for profit
+		\item Client creates and posts a smart contract
+		\item Workers and adjudicators apply to work the contract
+		\item Contract randomly chooses workers \& applicants
+		\item Workers complete the job (or don't)
+		\item Adjudicators vote on completion of job
+		\item Contract pays out worker or client depending on job completion
+		\item Contract pays out adjudicators in majority vote
+	\end{enumerate}
+\end{frame}
+
+\section{Simulator}
+\frame{\sectionpage}
+\subsection{Simulator Goals}
+\begin{frame}
+	\frametitle{Simulator Goals}
+	\framesubtitle{Simulator}
+
+	{
+		\large \bf
+		Simulator Design Goals
+	}
+	\begin{enumerate}
+		\item \textbf{Simple \& General}: Same reasons as the protocol
+		\item \textbf{Efficient}: Simulates contract usage (relatively) quickly
+		\item \textbf{Accurate}: Simplification \& efficiency shouldn't come at the cost of Accuracy
+		\item \textbf{Configurable}: Tunable to simulate different scenarios
+		\item \textbf{Informative}: Dumps as much data as possible
+	\end{enumerate}
+
+	\medskip
+
+	{
+		\large \bf
+		Interface
+	}
+	\begin{itemize}
+		\item Command line application
+		\item Reads configuration either from command line string or file
+		\item Records configuration, events, \& debug info each run
+	\end{itemize}
+\end{frame}
+
+\subsection{Modeling the Environment}
+\begin{frame}
+	\frametitle{Modeling the Environment}
+	\framesubtitle{Simulator}
+
+	{
+		\large \bf
+		Difficulty \& Skill
+	}
+	\begin{itemize}
+		\item Core aspect of papers is that some agents are better suited from some jobs than others
+		\item This can be modeled by an abstract vector
+		\item Each job has an associated difficulty vector, each worker has a skill vector
+		\item If the skill vector is (item-wise) greater than the difficulty vector, the worker can complete the job
+	\end{itemize}
+
+	\medskip
+
+	{
+		\large \bf
+		Job Creation
+	}
+	\begin{itemize}
+		\item Each client has some probability of "identifying" a job each frame
+		\item Once a job is identified, creates a contract
+		\item Order of events from a previous slide follows
+	\end{itemize}
+	
+\end{frame}
+
+\subsection{Running the Simulation}
+\begin{frame}
+	\frametitle{Running the Simulation}
+	\framesubtitle{Simulator}
+
+	{
+		\large \bf
+		General Run Sequence
+	}
+	\begin{enumerate}
+		\item Read the configuration variables
+		\item Run simulation in discrete time steps (frames)
+		\item Record and write data
+	\end{enumerate}
+
+	\medskip
+
+	{
+		\large \bf
+		Frame Updates
+	}
+	\begin{enumerate}
+		\item Update contract status (payouts, deadlines, etc.) \& create jobs
+		\item Agents act on current environment
 		\begin{itemize}
-			\item This is indeed a table.
-			\item Use minipage to put two things side by side, just like the images.
-			\item You can also use columns, but it's not necessary~\cite{scharrerAnswerMinipageColumns2011}.
+			\item Clients create contracts from jobs
+			\item Workers see available contracts and apply for some
 		\end{itemize}
-	\end{minipage}
+		\item Store and record current frame data
+	\end{enumerate}
 \end{frame}
 
-\subsection{Textboxes}
+\section{Applications}
+\frame{\sectionpage}
+\subsection{Immediate Applications}
 \begin{frame}
-	\frametitle{Textboxes}
-	\centering
-	\begin{minipage}{0.3\linewidth}
-		\begin{primaryblock}[equal height group=A,label=block:first]{First Block}
-			% I'm also going to set the indent for them so they play nicely with the textboxes
-			\setlength{\leftmargini}{8pt}
-			\begin{itemize}
-				\item First item of first block.
-				\item Second item of first block.
-				\item Notice that the next block matches the height of this one.
-				\item I am also changing the indentation of bullets so it looks better in the boxes.
-			\end{itemize}
-		\end{primaryblock}
-	\end{minipage}
-	\begin{minipage}{0.3\linewidth}
-		\begin{secondaryblock}[equal height group=A]{Second Block}
-			\setlength{\leftmargini}{8pt}
-			\begin{itemize}
-				\item First item of second block.
-				      \begin{itemize}
-					      \item first sub item of second block.
-				      \end{itemize}
-			\end{itemize}
-		\end{secondaryblock}
-	\end{minipage}
-	\begin{minipage}{0.3\linewidth}
-		\begin{primaryblock}[]{Third Block}
-			% \item First point of second block.
-			This one doesn't have a list and doesn't match the height!
-		\end{primaryblock}
-	\end{minipage}
-\end{frame}
+	\frametitle{Immediate Applications}
+	\framesubtitle{Applications}
 
-\section{Using Bibtex}
-\begin{frame}
-	\frametitle{Using Bibtex}
+	{
+		\large \bf
+		Judging Resilience
+	}
 	\begin{itemize}
-		\item It should be the same as using your regular bibtex.
-		\item To showcase, let's cite some resources~\cite{anglimAnswerImageFull2010,fiandrinoAnswerDesignCustom2013,kormyloAnswerMakeTikz2017} that helped me put this together.
-		\item You can add \texttt{[allowframebreaks]} to the frame to automatically continue the reference list in the text page if you have too many.
-		\item You can use \texttt{\textbackslash tcite} shorthand to use it in \textit{text} mode, i.e. \tcite{anglimAnswerImageFull2010}.
-		\item You can use \texttt{\textbackslash fcite} to add a citation with a footnote on the bottom of the slide.
-		      \begin{itemize}
-			      \item Note that if you are using \texttt{\textbackslash columns} or \texttt{\textbackslash minipage}, the footnote will by default appear in the bottom of the \textit{environment}, not the slide.
-			      \item You can manually escape this by using just \texttt{\textbackslash cite} or \texttt{\textbackslash tcite} in text and adding a \texttt{\textbackslash bfcite} (blank footcite) outside of these environments.
-			      \item e.g. \texttt{\textbackslash bfcite\{fiandrinoAnswerDesignCustom2013\}}.
-		      \end{itemize}
+		\item How robust is this "simplest" format against adversarial agents?
+		\item How can parameters be tuned to maximize profit?
+		\item What are the weak points in the protocol?
 	\end{itemize}
-	\bfcite{fiandrinoAnswerDesignCustom2013}
-\end{frame}
 
-\section{Some Notes}
-\begin{frame}
-	\frametitle{Few notes}
+	\medskip
+
+	{
+		\large \bf
+		Comparing Protocols
+	}
 	\begin{itemize}
-		\item I tried to use relative values for margins and header/sizes where I could. It should scale well with different page sizes.
-		\item I compiled this project with xelatex. I do not know if this will compile well on overleaf since the free version has extreme timeouts now.
+		\item This gives us a general base to compare different protocols
+		\item Compare previous protocols discussed in papers to this new one
+		\item Verify that these changes were required (and sufficient)
 	\end{itemize}
 \end{frame}
+
+\subsection{Future Applications}
+\begin{frame}
+	\frametitle{Future Applications}
+	\framesubtitle{Applications}
+
+	{
+		\large \bf
+		New Protocols
+	}
+	\begin{itemize}
+		\item New protocols can be created and tested in a general setting
+		\item Aarnav has done some previous work with trust tiers
+	\end{itemize}
+
+	\medskip
+
+	{
+		\large \bf
+		Optimal Agent Strategies
+	}
+	\begin{itemize}
+		\item Agents want to maximize profit, not a straightforward problem
+		\item Reinforcement learning?
+		\item Use knowledge of previous transactions?
+	\end{itemize}
+\end{frame}
+
+\section{Questions?}
+\frame{\sectionpage}
 
 \begin{frame}[allowframebreaks]
 	\frametitle{References}
