@@ -12,7 +12,7 @@ Simulator::Simulator() {
 
   std::filesystem::path data_dir("data");
   data_dir /= program_time(true);
-  LOG(INFO) << "Storing run data in " << data_dir;
+  LOG(INFO) << "Opening " << data_dir << " to store run data";
   LOG(DEBUG) << "Opening " << data_dir / "info.log" << " and " << data_dir / "trace.log"
              << " for logging";
   Logger::addFile(data_dir / "info.log", INFO);
@@ -24,17 +24,30 @@ Simulator::Simulator() {
 Simulator::~Simulator() = default;
 
 void Simulator::run() {
-  LOG(INFO) << "Beginning run";
+  LOG(INFO) << "Beginning simulation run";
   while (!shouldTerminate()) {
-    ++m_step_num;
-    LOG(DEBUG) << "Simulating step " << m_step_num;
-    for (Agent* agent : getAgents()) {
-      LOG(TRACE) << "Simulating Agent " << agent->ID << " Step " << m_step_num;
-      agent->act(this);
+    LOG(INFO) << "Simulating step " << m_step_num;
+    LOG(DEBUG) << "Updating Contracts";
+    for (auto& contract : m_contracts) {
+      if (contract->shouldExecute_wrapper()) {
+        LOG(INFO) << "Executing contract " << contract->ID;
+        contract->execute_wrapper();
+      } else {
+        LOG(TRACE) << "Not executing contract " << contract->ID;
+      }
     }
-    LOG(TRACE) << "Agents simulated, evolving state (" << m_step_num << " -> " << m_step_num + 1
-               << ")";
-    step(m_step_num);
+    LOG(DEBUG) << "Updating Agents";
+    for (auto& agent : m_agents) {
+      if (agent->active()) {
+        LOG(TRACE) << "Simulating Agent " << agent->ID << " - Step " << m_step_num;
+        agent->act();
+      } else {
+        LOG(TRACE) << "Agent " << agent->ID << " is inactive - Step " << m_step_num;
+      }
+    }
+    LOG(TRACE) << "Updating Simulation";
+    step();
+    ++m_step_num;
   }
 }
 

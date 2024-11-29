@@ -10,10 +10,9 @@ Checks: 'bugprone-*,
          readability-*,
          
          -modernize-use-trailing-return-type,
-         -readability-identifier-length'
+         -readability-identifier-length,
+         -readability-function-cognitive-complexity'
 CheckOptions:
   - key: lang.std
     value: 'c++20'
-ExtraArgs: [ '-Isqlite', '-Inlohmann_json/single_include' ]
-HeaderFilterRegex: '^(?!sqlite|nlohmann_json/single_include).*$'
 WarningsAsErrors: '*'

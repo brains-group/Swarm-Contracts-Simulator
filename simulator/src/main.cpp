@@ -1,32 +1,42 @@
 #include <iostream>
 
+#include "BaseAgent.h"
+#include "BaseContract.h"
 #include "BaseSimulator.h"
 #include "Logger.h"
 
-class ExampleSimulator;
+class ExampleContract : public base::Contract {
+ public:
+  ExampleContract(unsigned int ID_, base::Simulator* sim)
+      : base::Contract(ID_, sim) {
+    LOG(INFO) << "Contract " << ID << " has been created";
+  }
+
+  void execute() override { LOG(INFO) << "I AM CONTRACT " << ID << " AND I AM BEING EXECUTED!!"; }
+
+  bool shouldExecute() override { return m_sim->getStep() == 6; }
+};
 
 class ExampleAgent : public base::Agent {
  public:
-  explicit ExampleAgent(unsigned int ID_, unsigned int step)
-      : base::Agent(ID_, step) {
+  explicit ExampleAgent(unsigned int ID_, base::Simulator* sim, bool active)
+      : base::Agent(ID_, sim, active) {
     LOG(INFO) << "Agent " << ID << ", reporting for duty!";
   }
 
-  void act(base::Simulator* /*sim*/) override {
-    LOG(TRACE) << "I am doing some very important work!";
-  }
+  void act() override { LOG(TRACE) << "I am doing some very important work!"; }
 
  private:
 };
 
 class LazyAgent : public base::Agent {
  public:
-  explicit LazyAgent(unsigned int ID, unsigned int step)
-      : base::Agent(ID, step) {
+  explicit LazyAgent(unsigned int ID, base::Simulator* sim, bool active)
+      : base::Agent(ID, sim, active) {
     LOG(INFO) << "Hello World! I am a lazy agent. ZZZzzzzzz....";
   }
 
-  void act(base::Simulator* /*sim*/) override { LOG(TRACE) << "ZZzzzzz..."; }
+  void act() override { LOG(TRACE) << "ZZzzzzz..."; }
 
  private:
 };
@@ -36,12 +46,22 @@ class ExampleSimulator : public base::Simulator {
   ExampleSimulator() {
     LOG(INFO) << "Adding some agents...";
     addAgent<ExampleAgent>();
-    addAgent<LazyAgent>();
   }
 
  private:
-  void step(unsigned int /* step_num */) override { LOG(DEBUG) << "The world is changing..."; }
-  bool shouldTerminate() override { return getStep() > 10; }
+  void step() override {
+    LOG(DEBUG) << "The world is changing...";
+    if (getStep() == 3) {
+      LOG(INFO) << "Creating a contract";
+      addContract<ExampleContract>();
+    }
+
+    if (getStep() == 5) {
+      LOG(INFO) << "Adding a lazy agent";
+      addAgent<LazyAgent>();
+    }
+  }
+  [[nodiscard]] bool shouldTerminate() const override { return getStep() >= 10; }
 };
 
 int main() {
