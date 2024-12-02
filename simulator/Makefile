@@ -11,7 +11,7 @@ LD = clang++
 # C flags
 CFLAGS =
 # C++ flags
-CXXFLAGS = -std=c++20
+CXXFLAGS = -std=c++23
 # C/C++ flags
 CPPFLAGS = -Wall -Wextra -Werror -g
 # dependency-generation flags

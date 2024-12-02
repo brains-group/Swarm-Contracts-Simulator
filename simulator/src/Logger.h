@@ -11,7 +11,7 @@
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage): Macro needed for log values
 #define LOG(level) \
-  if (true) Logger(level, __FILE__, __LINE__, __FUNCTION__).stream()
+  if (true) Logger(level, __FILE__, __LINE__, static_cast<const char*>(__FUNCTION__)).stream()
 
 enum LogLevel : char { CRITICAL, ERROR, WARN, INFO, DEBUG, TRACE };
 
@@ -19,7 +19,7 @@ std::string_view toStr(LogLevel level);
 
 class Logger {
  public:
-  Logger(LogLevel level, const std::filesystem::path& path, int line, const char* function);
+  Logger(LogLevel level, const std::filesystem::path& path, int line, std::string_view function);
   ~Logger();
 
   // Delete all other constructors & assignment
@@ -129,4 +129,10 @@ class Logger {
       return workers;
     }
   };
+};
+
+class ScopedConsoleLogger {
+ public:
+  ScopedConsoleLogger(LogLevel level = INFO) { Logger::addConsole(level); }
+  ~ScopedConsoleLogger() { Logger::removeConsole(); }
 };

@@ -1,72 +1,35 @@
-#include <iostream>
-
-#include "BaseAgent.h"
-#include "BaseContract.h"
-#include "BaseSimulator.h"
 #include "Logger.h"
+#include "Simulator.h"
 
-class ExampleContract : public base::Contract {
- public:
-  ExampleContract(unsigned int ID_, base::Simulator* sim)
-      : base::Contract(ID_, sim) {
-    LOG(INFO) << "Contract " << ID << " has been created";
-  }
+#include "Agent.h"
+#include "Contract.h"
 
-  void execute() override { LOG(INFO) << "I AM CONTRACT " << ID << " AND I AM BEING EXECUTED!!"; }
+class ExampleAgent : public Agent {
+  public:
+    ExampleAgent(unsigned int ID_, Simulator* sim) : Agent(ID_, sim) {}
 
-  bool shouldExecute() override { return m_sim->getStep() == 6; }
+    void act() {}
 };
 
-class ExampleAgent : public base::Agent {
- public:
-  explicit ExampleAgent(unsigned int ID_, base::Simulator* sim, bool active)
-      : base::Agent(ID_, sim, active) {
-    LOG(INFO) << "Agent " << ID << ", reporting for duty!";
-  }
 
-  void act() override { LOG(TRACE) << "I am doing some very important work!"; }
+// These three methods need to be implemented
+void Simulator::init() {
+  LOG(INFO) << "Simulator init";
+  makeEntity<ExampleAgent>();
+}
 
- private:
-};
+bool Simulator::shouldTerminate() const {
+  return getStep() == 10;
+}
 
-class LazyAgent : public base::Agent {
- public:
-  explicit LazyAgent(unsigned int ID, base::Simulator* sim, bool active)
-      : base::Agent(ID, sim, active) {
-    LOG(INFO) << "Hello World! I am a lazy agent. ZZZzzzzzz....";
-  }
-
-  void act() override { LOG(TRACE) << "ZZzzzzz..."; }
-
- private:
-};
-
-class ExampleSimulator : public base::Simulator {
- public:
-  ExampleSimulator() {
-    LOG(INFO) << "Adding some agents...";
-    addAgent<ExampleAgent>();
-  }
-
- private:
-  void step() override {
-    LOG(DEBUG) << "The world is changing...";
-    if (getStep() == 3) {
-      LOG(INFO) << "Creating a contract";
-      addContract<ExampleContract>();
-    }
-
-    if (getStep() == 5) {
-      LOG(INFO) << "Adding a lazy agent";
-      addAgent<LazyAgent>();
-    }
-  }
-  [[nodiscard]] bool shouldTerminate() const override { return getStep() >= 10; }
-};
+void Simulator::step() {
+  LOG(INFO) << "Big stepper";
+}
 
 int main() {
   Logger::addConsole(TRACE);
 
-  ExampleSimulator sim;
+  Simulator sim;
   sim.run();
+
 }
