@@ -1,13 +1,16 @@
 #pragma once
 
+#include <functional>
 #include <memory>
+#include <ranges>
 #include <utility>
 #include <vector>
-#include "FrameMetrics.h"
 
-class Entity;
-class Agent;
-class Contract;
+#include "Entity.h"
+#include "FrameMetrics.h"
+#include "Job.h"
+#include "Agent.h"
+#include "Contract.h"
 
 /**
  * This is the driver class of the simulator. It manages setup and teardown, as well as the
@@ -45,19 +48,110 @@ class Simulator {
   unsigned int getStep() const { return m_frameMetrics.size() - 1; }
 
   /**
-   * Creates a new entity
+   * Creates a new Agent
+   *
+   * @param args The arguments to forward to the Agent constructor
+   *
+   * @return A pointer to the newly created agent
    */
-  template <typename T>
-    requires std::is_base_of_v<Entity, T>
-  T* makeEntity();
+  template <typename AgentType, typename... Args>
+    requires std::is_base_of_v<Agent, AgentType>
+  AgentType* makeAgent(Args&&... args);
+
+  /**
+   * Creates a new Contract
+   *
+   * @param args The arguments to forward to the Contract constructor
+   *
+   * @return A pointer to the newly created contract
+   */
+  template <typename... Args> Contract* makeContract(Args&&... args);
+
+  /**
+   * Creates a new job
+   */
+  template <typename... Args> Job* makeJob(Args&&... args);
+
+  /**
+   * Checks if a given job has been claimed
+   */
+  bool isJobAvailable(const Job* job) const { return getStep() < job->claimed_step; }
+
+  /**
+   * Reports the available jobs
+   */
+  auto availableJobs() const {
+    return m_jobs | std::views::transform([](const auto& job) { return job.get(); })
+         | std::views::filter([this](const Job* job) { return isJobAvailable(job); });
+  }
+
+  /**
+   * Checks if a given contract has been claimed
+   */
+  bool isContractAvailable(const Contract* contract) const {
+    return isJobAvailable(contract->getJob());
+  }
+
+  /**
+   * Reports the available contracts
+   */
+  auto availableContracts() const {
+    return m_contracts
+         | std::views::filter([this](const Contract* c) { return isContractAvailable(c); });
+  }
+
+  /**
+   * Gets a pointer to an existing entity
+   *
+   * @param ID The ID of an entity to be returned
+   *
+   * @return A pointer to the entity with the given ID
+   */
+  Entity* getEntity(unsigned int ID) {
+    return ID < m_entities.size() ? m_entities[ID].get()
+                                  : m_newEntities[ID - m_entities.size()].get();
+  }
+
+  /**
+   * Updtaes the metrics relevant to deactivating entities
+   *
+   * @param ID The ID of the entity to be deactivated
+   */
+  void notifyDeactivated(unsigned int ID);
+
+  /**
+   * Updates the metrics relevant to entity payments
+   *
+   * @param source_ID The ID of the entity making the payment
+   * @param dest_ID The ID of the entity receiving the payment
+   * @param amount The total value of the payment
+   */
+  void notifyPayment(unsigned int source_ID, unsigned int dest_ID, unsigned int amount);
+
+  /**
+   * Updates the metrics relevant to claiming jobs
+   */
+  void notifyClaimedJob(unsigned int job_ID);
 
  private:
-  std::vector<FrameMetrics>            m_frameMetrics;    // Data relevant to each simulation frame
-  std::vector<std::unique_ptr<Entity>> m_entities;        // The entities being simulated
-  std::vector<Agent*>                  m_agents;
-  std::vector<Contract*>               m_contracts;
+  std::vector<FrameMetrics> m_frameMetrics;           // Data relevant to each simulation frame
+
+  std::vector<std::unique_ptr<Job>> m_jobs;           // The jobs being simulated
+
+  std::vector<std::unique_ptr<Entity>> m_entities;    // The entities being simulated
+
+  // Entities which were created during the current simulation frame
+  // Messy problems with iterating over a vector while we add to it
+  std::vector<std::unique_ptr<Entity>> m_newEntities;
+  /**
+   * The below are all managed by the `m_entities` vector above. This provides a more convenient
+   * interface to collecting common types
+   */
+  std::vector<Contract*> m_contracts;    // The contracts being simulated
+  std::vector<Agent*>    m_agents;       // The agents being simulated
 
   // THE BELOW METHODS NEED TO BE IMPLEMENTED BY THE USER ------------------------------------------
+
   /**
    * Inheritance gets messy with this class, but since only one simulator type should be needed
    * (as opposed to different strategies for agents) inheritance shouldn't be necessary.
@@ -84,20 +178,30 @@ class Simulator {
   void step();
 };
 
-template <typename T>
-  requires std::is_base_of_v<Entity, T>
-T* Simulator::makeEntity() {
-  std::unique_ptr<T> entity = std::make_unique<T>(m_entities.size(), this);
-  if constexpr (std::is_base_of_v<Agent, T>) {
-    ++m_frameMetrics.back().agents_created;
-    m_agents.emplace_back(entity.get());
-  } else if constexpr (std::is_base_of_v<Contract, T>) {
-    ++m_frameMetrics.back().contracts_created;
-    m_contracts.emplace_back(entity.get());
-  } else {
-    std::unreachable();
-  }
-  T* entity_raw = entity.get();
-  m_entities.emplace_back(std::move(entity));
-  return entity_raw;
+template <typename AgentType, typename... Args>
+  requires std::is_base_of_v<Agent, AgentType>
+AgentType* Simulator::makeAgent(Args&&... args) {
+  m_newEntities.emplace_back(std::make_unique<AgentType>(m_entities.size() + m_newEntities.size(),
+                                                         this, std::forward<Args>(args)...));
+  AgentType* agent_raw = dynamic_cast<AgentType*>(m_newEntities.back().get());
+  m_agents.emplace_back(agent_raw);
+  ++m_frameMetrics.back().agents_created;
+  m_frameMetrics.back().created_value += m_newEntities.back()->balance();
+  return agent_raw;
+}
+
+template <typename... Args> Contract* Simulator::makeContract(Args&&... args) {
+  std::unique_ptr<Entity>& contract = m_newEntities.emplace_back(std::make_unique<Contract>(
+      m_entities.size() + m_newEntities.size(), this, std::forward<Args>(args)...));
+  ++m_frameMetrics.back().contracts_created;
+  Contract* contract_raw = dynamic_cast<Contract*>(contract.get());
+  contract_raw->getClient()->pay(contract_raw, contract_raw->collateral);
+  return m_contracts.emplace_back(contract_raw);
+}
+
+template <typename... Args> Job* Simulator::makeJob(Args&&... args) {
+  std::unique_ptr<Job>& job = m_jobs.emplace_back(
+      std::make_unique<Job>(m_jobs.size(), getStep(), std::forward<Args>(args)...));
+  ++m_frameMetrics.back().jobs_created;
+  return job.get();
 }

@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 
+#include <ranges>
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage): Macro needed for log values
 #define LOG(level) \
   if (true) Logger(level, __FILE__, __LINE__, static_cast<const char*>(__FUNCTION__)).stream()
@@ -136,3 +137,24 @@ class ScopedConsoleLogger {
   ScopedConsoleLogger(LogLevel level = INFO) { Logger::addConsole(level); }
   ~ScopedConsoleLogger() { Logger::removeConsole(); }
 };
+
+
+template <class T, unsigned long N>
+inline std::ostream& operator<<(std::ostream& ostr, const std::array<T, N>& arr) {
+  ostr << "[ ";
+  if constexpr (N > 4) {
+    for (const auto& e : arr | std::views::take(2)) {
+      ostr << e << ", ";
+    }
+    ostr << "..., ";
+    for (const auto& e : arr | std::views::reverse | std::views::take(2) | std::views::reverse) {
+      ostr << e << ", ";
+    }
+  } else {
+    for (const auto& e : arr) {
+      ostr << e << ", ";
+    }
+  }
+  ostr << "]";
+  return ostr;
+}
