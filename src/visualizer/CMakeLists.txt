@@ -1,5 +1,6 @@
 add_executable(visualizer
     main.cpp
+    visualizer.cpp
 )
 
 include(FetchContent)
@@ -11,4 +12,8 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-target_link_libraries(visualizer PRIVATE SFML::Graphics)
+target_link_libraries(visualizer PRIVATE
+    SFML::Graphics
+    simulator
+)
+
