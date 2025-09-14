@@ -6,6 +6,8 @@
 #include <simulator/config.hpp>
 #include <vector>
 
+#include "simulator/materialstore.hpp"
+
 namespace sim {
 
 class Simulator {
@@ -16,8 +18,10 @@ public:
 
     virtual auto runFrame() -> void = 0;
 
-    virtual auto getConfig() -> const Config&             = 0;
-    virtual auto getAgents() -> const std::vector<Agent>& = 0;
+    [[nodiscard]] virtual auto getConfig() const -> const Config&                             = 0;
+    [[nodiscard]] virtual auto getAgents() const -> const std::vector<Agent>&                 = 0;
+    [[nodiscard]] virtual auto getMaterialStores() const -> const std::vector<MaterialStore>& = 0;
+    [[nodiscard]] virtual auto getTargetPosition() const -> Point                             = 0;
 };
 
 }    // namespace sim

@@ -4,4 +4,4 @@ namespace {
 class ConfigImpl : public sim::Config {};
 }    // namespace
 
-auto sim::Config::create() -> std::unique_ptr<Config> { return std::make_unique<ConfigImpl>(); }
+auto sim::Config::create() -> std::shared_ptr<Config> { return std::make_unique<ConfigImpl>(); }

@@ -1,19 +1,24 @@
 #pragma once
 
+#include <simulator/physics.hpp>
+
 namespace sim {
 
 class Agent {
 public:
-    Agent(float x, float y)
-        : m_x(x)
-        , m_y(y) {}
+    Agent(const Point& loc)
+        : m_loc(loc) {}
 
-    [[nodiscard]] auto getX() const -> float { return m_x; }
-    [[nodiscard]] auto getY() const -> float { return m_y; }
+    [[nodiscard]] auto getX() const -> float { return m_loc.x; }
+    [[nodiscard]] auto getY() const -> float { return m_loc.y; }
+
+    void runFrame() {
+        m_loc.x += 1;
+        m_loc.y += 1;
+    }
 
 private:
-    float m_x;
-    float m_y;
+    Point m_loc;
 };
 
 }    // namespace sim

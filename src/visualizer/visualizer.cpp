@@ -4,6 +4,7 @@
 #include <common/logger.hpp>
 #include <simulator/config.hpp>
 
+#include "simulator/materialstore.hpp"
 #include "simulator/simulator.hpp"
 
 namespace {
@@ -21,6 +22,13 @@ public:
 
     auto run() -> Result<void> override {
         LOG(INFO) << "Beginning running of visualizer";
+        sf::RectangleShape target({50, 50});
+        target.setFillColor(sf::Color::Green);
+        target.setPosition(
+            {m_simulator->getTargetPosition().x, m_simulator->getTargetPosition().y});
+
+        sf::RectangleShape materialStore({50, 50});
+        materialStore.setOutlineThickness(5);
         while (m_window.isOpen()) {
             while (const std::optional<sf::Event> event = m_window.pollEvent()) {
                 if (event->is<sf::Event::Closed>()) { m_window.close(); }
@@ -30,6 +38,15 @@ public:
             entity.setFillColor(sf::Color::Black);
 
             m_window.clear(sf::Color::White);
+
+            m_window.draw(target);
+
+            for (const sim::MaterialStore& mat : m_simulator->getMaterialStores()) {
+                materialStore.setPosition({mat.getLoc().start.x, mat.getLoc().start.y});
+                materialStore.setOutlineColor(
+                    {mat.getMaterial().red, mat.getMaterial().green, mat.getMaterial().blue});
+                m_window.draw(materialStore);
+            }
 
             m_simulator->runFrame();
             for (const sim::Agent& agent : m_simulator->getAgents()) {

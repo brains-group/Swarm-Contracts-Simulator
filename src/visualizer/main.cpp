@@ -12,5 +12,9 @@ auto main() -> int {
     std::unique_ptr<vis::Visualizer> vis = vis::Visualizer::create();
 
     Result<void> res = vis->run();
-    if (!res) { LOG(ERROR) << "Visualizer failed with error: " << res.error(); }
+    if (!res) {
+        LOG(ERROR) << "Visualizer failed with error: " << res.error();
+        return res.error().value();
+    }
+    LOG(INFO) << "Visualizer finished, exiting";
 }
