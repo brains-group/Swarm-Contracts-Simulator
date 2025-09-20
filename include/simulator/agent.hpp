@@ -2,11 +2,11 @@
 
 #include <simulator/physics.hpp>
 
-namespace sim {
+namespace scs::sim {
 
 class Agent {
 public:
-    Agent(const Point& loc)
+    explicit Agent(const Point& loc)
         : m_loc(loc) {}
 
     [[nodiscard]] auto getX() const -> float { return m_loc.x; }
@@ -21,4 +21,4 @@ private:
     Point m_loc;
 };
 
-}    // namespace sim
+}    // namespace scs::sim

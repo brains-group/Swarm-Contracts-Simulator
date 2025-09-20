@@ -2,21 +2,22 @@
 
 #include <SFML/Graphics.hpp>
 #include <common/logger.hpp>
-#include <simulator/config.hpp>
-
-#include "simulator/materialstore.hpp"
-#include "simulator/simulator.hpp"
+#include <config/config.hpp>
+#include <simulator/materialstore.hpp>
+#include <simulator/simulator.hpp>
 
 namespace {
 
-class VisualizerImpl : public vis::Visualizer {
+class VisualizerImpl : public scs::vis::Visualizer {
 public:
     DELETE_COPY_MOVE(VisualizerImpl);
     DEFAULT_DTOR(VisualizerImpl);
-    explicit VisualizerImpl()
-        : m_window(sf::VideoMode({1920U, 1080U}), "CMake SMFL Project")
-        , m_simulator(sim::Simulator::create(sim::Config::create())) {
-        m_window.setFramerateLimit(144);
+    explicit VisualizerImpl(const scs::config::VisualizerConfig& config)
+        : m_config(config)
+        , m_window(sf::VideoMode({m_config.windowWidth(), m_config.windowHeight()}),
+                   m_config.windowName())
+        , m_simulator(scs::sim::Simulator::create()) {
+        m_window.setFramerateLimit(m_config.framerateLimit());
         LOG(INFO) << "Constructed new visualizer";
     }
 
@@ -41,7 +42,7 @@ public:
 
             m_window.draw(target);
 
-            for (const sim::MaterialStore& mat : m_simulator->getMaterialStores()) {
+            for (const scs::sim::MaterialStore& mat : m_simulator->getMaterialStores()) {
                 materialStore.setPosition({mat.getLoc().start.x, mat.getLoc().start.y});
                 materialStore.setOutlineColor(
                     {mat.getMaterial().red, mat.getMaterial().green, mat.getMaterial().blue});
@@ -49,7 +50,7 @@ public:
             }
 
             m_simulator->runFrame();
-            for (const sim::Agent& agent : m_simulator->getAgents()) {
+            for (const scs::sim::Agent& agent : m_simulator->getAgents()) {
                 entity.setPosition({agent.getX(), agent.getY()});
                 m_window.draw(entity);
             }
@@ -60,12 +61,13 @@ public:
     }
 
 private:
-    sf::RenderWindow                m_window;
-    std::unique_ptr<sim::Simulator> m_simulator;
+    const scs::config::VisualizerConfig& m_config;
+    sf::RenderWindow                     m_window;
+    std::unique_ptr<scs::sim::Simulator> m_simulator;
 };
 
 }    // namespace
 
-auto vis::Visualizer::create() -> std::unique_ptr<Visualizer> {
-    return std::make_unique<VisualizerImpl>();
+auto scs::vis::Visualizer::create() -> std::unique_ptr<Visualizer> {
+    return std::make_unique<VisualizerImpl>(scs::config::Config::instance().getVisualizerConfig());
 }

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <common/macros.hpp>
 #include <memory>
-#include <simulator/config.hpp>
+
+#include <common/macros.hpp>
 #include <simulator/simulator.hpp>
 
-namespace vis {
+namespace scs::vis {
 
 class Visualizer {
 public:
@@ -16,4 +16,4 @@ public:
     virtual auto run() -> Result<void> = 0;
 };
 
-}    // namespace vis
+}    // namespace scs::vis

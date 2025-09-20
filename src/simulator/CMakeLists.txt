@@ -1,5 +1,4 @@
 add_library(simulator
-    config.cpp
     simulator.cpp
 )
 

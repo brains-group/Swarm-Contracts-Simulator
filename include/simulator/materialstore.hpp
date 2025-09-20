@@ -1,9 +1,10 @@
 #pragma once
 
 #include <cstdint>
+
 #include <simulator/physics.hpp>
 
-namespace sim {
+namespace scs::sim {
 
 struct Material {
     uint8_t red;
@@ -25,4 +26,4 @@ private:
     Material m_material;
 };
 
-}    // namespace sim
+}    // namespace scs::sim

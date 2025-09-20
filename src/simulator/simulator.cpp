@@ -1,17 +1,20 @@
 #include <memory>
-#include <simulator/config.hpp>
-#include <simulator/simulator.hpp>
 #include <vector>
+
+#include <config/config.hpp>
+#include <simulator/simulator.hpp>
+
+#include "config/simulatorconfig.hpp"
 
 namespace {
 
-class SimulatorImpl : public sim::Simulator {
+class SimulatorImpl : public scs::sim::Simulator {
 public:
     DELETE_COPY_MOVE(SimulatorImpl);
     DEFAULT_DTOR(SimulatorImpl);
 
-    explicit SimulatorImpl(std::shared_ptr<const sim::Config>&& config)
-        : m_config(std::move(config)) {
+    explicit SimulatorImpl(const scs::config::SimulatorConfig& config)
+        : m_config(config) {
         // TODO: Make the initial config come from the config class
         m_agents.emplace_back(Point(100, 100));
         m_agents.emplace_back(Point(200, 200));
@@ -20,34 +23,33 @@ public:
         m_target.start = Point(0, 0);
         m_target.end   = Point(50, 50);
 
-        m_materials.emplace_back(Rect(Point(600, 600), Point(650, 650)), sim::Material(255, 0, 0));
+        m_materials.emplace_back(Rect(Point(600, 600), Point(650, 650)),
+                                 scs::sim::Material(255, 0, 0));
     }
 
     auto runFrame() -> void override {
-        for (sim::Agent& agent : m_agents) { agent.runFrame(); }
+        for (scs::sim::Agent& agent : m_agents) { agent.runFrame(); }
     }
 
-    [[nodiscard]] auto getConfig() const -> const sim::Config& override { return *m_config; }
-    [[nodiscard]] auto getAgents() const -> const std::vector<sim::Agent>& override {
+    [[nodiscard]] auto getAgents() const -> const std::vector<scs::sim::Agent>& override {
         return m_agents;
     }
     [[nodiscard]] auto getTargetPosition() const -> Point override { return m_target.start; }
     [[nodiscard]] auto getMaterialStores() const
-        -> const std::vector<sim::MaterialStore>& override {
+        -> const std::vector<scs::sim::MaterialStore>& override {
         return m_materials;
     }
 
 private:
-    const std::shared_ptr<const sim::Config> m_config;
-    std::vector<sim::Agent>                  m_agents;
-    Rect                                     m_target;
-    std::vector<sim::MaterialStore>          m_materials;
+    const scs::config::SimulatorConfig&  m_config;
+    std::vector<scs::sim::Agent>         m_agents;
+    Rect                                 m_target;
+    std::vector<scs::sim::MaterialStore> m_materials;
 };
 
 }    // namespace
 
-auto sim::Simulator::create(std::shared_ptr<const sim::Config> config)
-    -> std::unique_ptr<sim::Simulator> {
-    return std::make_unique<SimulatorImpl>(std::move(config));
+auto scs::sim::Simulator::create() -> std::unique_ptr<sim::Simulator> {
+    return std::make_unique<SimulatorImpl>(scs::config::Config::instance().getSimulatorConfig());
 };
 
