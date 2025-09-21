@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <data/point.hpp>
+#include <data/agentinfo.hpp>
 
 namespace scs::vis {
 
@@ -9,9 +9,12 @@ class Agent
     : public sf::Drawable
     , public sf::Transformable {
 public:
-    explicit Agent() { m_circle.setFillColor(sf::Color::White); }
+    Agent() { m_circle.setFillColor(sf::Color::White); }
 
-    auto setSize(float size) { m_circle.setRadius(size / 2); }
+    auto update(const data::AgentInfo& info) {
+        m_circle.setPosition({info.loc.x, info.loc.y});
+        m_circle.setRadius(info.size / 2);
+    }
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override {

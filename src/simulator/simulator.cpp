@@ -28,6 +28,10 @@ public:
         return m_config.targetCorners();
     }
 
+    [[nodiscard]] auto getMaterialInfos() const -> const std::vector<data::MaterialInfo>& override {
+        return m_config.materialInfos();
+    }
+
     [[nodiscard]] auto getAgentInfos() const -> const std::vector<data::AgentInfo>& override {
         return m_agents;
     }

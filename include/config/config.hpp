@@ -5,6 +5,7 @@
 #include <config/simulatorconfig.hpp>
 #include <config/visualizerconfig.hpp>
 #include <data/agentinfo.hpp>
+#include <data/materialinfo.hpp>
 
 namespace scs::config {
 
@@ -33,6 +34,9 @@ public:
     [[nodiscard]] auto targetCorners() const -> const std::vector<data::Point>& override {
         return m_targetCorners;
     }
+    [[nodiscard]] auto materialInfos() const -> const std::vector<data::MaterialInfo>& override {
+        return m_materialInfos;
+    }
     [[nodiscard]] auto initialAgentInfos() const -> const std::vector<data::AgentInfo>& override {
         return m_initialAgentInfos;
     }
@@ -50,20 +54,25 @@ private:
         {.x = 100, .y = 900},
         {.x = 900, .y = 900},
         {.x = 900, .y = 100},
-        {.x = 100, .y = 100}
+        {.x = 100, .y = 100},
     };
     const std::vector<data::Point> m_targetCorners = {
         {.x = 100, .y = 100},
         {.x = 100, .y = 200},
         {.x = 200, .y = 200},
         {.x = 200, .y = 100},
-        {.x = 100, .y = 100}
+        {.x = 100, .y = 100},
+    };
+    const std::vector<data::MaterialInfo> m_materialInfos{
+        {.loc = {.x = 850, .y = 100}, .size = 50, .color = {.r = 255, .g = 0, .b = 0}},
+        {.loc = {.x = 850, .y = 850}, .size = 50, .color = {.r = 0, .g = 255, .b = 0}},
+        {.loc = {.x = 100, .y = 850}, .size = 50, .color = {.r = 0, .g = 0, .b = 255}},
     };
     const std::vector<data::AgentInfo> m_initialAgentInfos = {
         {.loc = {.x = 150, .y = 150}, .size = 10},
         {.loc = {.x = 250, .y = 250}, .size = 20},
         {.loc = {.x = 350, .y = 350}, .size = 30},
-        {.loc = {.x = 450, .y = 450}, .size = 40}
+        {.loc = {.x = 450, .y = 450}, .size = 40},
     };
 };
 

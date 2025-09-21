@@ -7,6 +7,7 @@
 #include <simulator/simulator.hpp>
 
 #include "agent.hpp"
+#include "material.hpp"
 #include "room.hpp"
 #include "target.hpp"
 
@@ -41,11 +42,16 @@ public:
             m_window.draw(m_room);
             m_window.draw(m_target);
 
+            for (const auto& material : m_simulator->getMaterialInfos()) {
+                m_material.update(material);
+                m_window.draw(m_material);
+            }
+
             for (const auto& agent : m_simulator->getAgentInfos()) {
-                m_agent.setPosition({agent.loc.x, agent.loc.y});
-                m_agent.setSize(agent.size);
+                m_agent.update(agent);
                 m_window.draw(m_agent);
             }
+
             m_window.display();
         };
 
@@ -57,9 +63,10 @@ private:
     std::unique_ptr<scs::sim::Simulator> m_simulator;
     sf::RenderWindow                     m_window;
 
-    Room   m_room;
-    Target m_target;
-    Agent  m_agent;
+    Room     m_room;
+    Target   m_target;
+    Material m_material;
+    Agent    m_agent;
 };
 
 }    // namespace
