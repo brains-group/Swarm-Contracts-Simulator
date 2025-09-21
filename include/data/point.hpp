@@ -1,11 +1,10 @@
 #pragma once
 
+namespace scs::data {
+
 struct Point {
     float x;
     float y;
 };
 
-struct Rect {
-    Point start;
-    Point end;
-};
+}    // namespace scs::data
