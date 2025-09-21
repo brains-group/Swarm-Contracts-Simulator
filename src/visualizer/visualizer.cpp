@@ -6,6 +6,7 @@
 #include <config/config.hpp>
 #include <simulator/simulator.hpp>
 
+#include "agent.hpp"
 #include "room.hpp"
 #include "target.hpp"
 
@@ -38,8 +39,13 @@ public:
 
             m_window.clear();
             m_window.draw(m_room);
-
             m_window.draw(m_target);
+
+            for (const auto& agent : m_simulator->getAgentInfos()) {
+                m_agent.setPosition({agent.loc.x, agent.loc.y});
+                m_agent.setSize(agent.size);
+                m_window.draw(m_agent);
+            }
             m_window.display();
         };
 
@@ -53,6 +59,7 @@ private:
 
     Room   m_room;
     Target m_target;
+    Agent  m_agent;
 };
 
 }    // namespace

@@ -4,6 +4,7 @@
 #include <common/singleton.hpp>
 #include <config/simulatorconfig.hpp>
 #include <config/visualizerconfig.hpp>
+#include <data/agentinfo.hpp>
 
 namespace scs::config {
 
@@ -32,13 +33,19 @@ public:
     [[nodiscard]] auto targetCorners() const -> const std::vector<data::Point>& override {
         return m_targetCorners;
     }
+    [[nodiscard]] auto initialAgentInfos() const -> const std::vector<data::AgentInfo>& override {
+        return m_initialAgentInfos;
+    }
 
 private:
-    const unsigned int             m_windowWidth    = 1920;
-    const unsigned int             m_windowHeight   = 1080;
-    const std::string              m_windowName     = "Swarm Contract Simulator Visualization";
-    const unsigned int             m_framerateLimit = 144;
-    const std::vector<data::Point> m_roomCorners    = {
+    // Visualizer Config
+    const unsigned int m_windowWidth    = 1920;
+    const unsigned int m_windowHeight   = 1080;
+    const std::string  m_windowName     = "Swarm Contract Simulator Visualization";
+    const unsigned int m_framerateLimit = 144;
+
+    // Simulator Config
+    const std::vector<data::Point> m_roomCorners = {
         {.x = 100, .y = 100},
         {.x = 100, .y = 900},
         {.x = 900, .y = 900},
@@ -51,6 +58,12 @@ private:
         {.x = 200, .y = 200},
         {.x = 200, .y = 100},
         {.x = 100, .y = 100}
+    };
+    const std::vector<data::AgentInfo> m_initialAgentInfos = {
+        {.loc = {.x = 150, .y = 150}, .size = 10},
+        {.loc = {.x = 250, .y = 250}, .size = 20},
+        {.loc = {.x = 350, .y = 350}, .size = 30},
+        {.loc = {.x = 450, .y = 450}, .size = 40}
     };
 };
 

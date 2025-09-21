@@ -1,9 +1,8 @@
-#include <memory>
-#include <vector>
-
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
+#include <memory>
 #include <simulator/simulator.hpp>
+#include <vector>
 
 namespace scs::sim {
 
@@ -15,7 +14,8 @@ public:
     DEFAULT_DTOR(SimulatorImpl);
 
     explicit SimulatorImpl(const config::SimulatorConfig& config)
-        : m_config(config) {}
+        : m_config(config)
+        , m_agents(m_config.initialAgentInfos()) {}
 
     auto load() -> Result<void> override { return {}; }
     auto runFrame() -> void override {}
@@ -28,8 +28,14 @@ public:
         return m_config.targetCorners();
     }
 
+    [[nodiscard]] auto getAgentInfos() const -> const std::vector<data::AgentInfo>& override {
+        return m_agents;
+    }
+
 private:
     const config::SimulatorConfig& m_config;
+
+    std::vector<data::AgentInfo> m_agents;
 };
 
 }    // namespace

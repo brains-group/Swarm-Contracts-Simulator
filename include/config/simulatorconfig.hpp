@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vector>
-
 #include <common/macros.hpp>
+#include <data/agentinfo.hpp>
 #include <data/point.hpp>
+#include <vector>
 
 namespace scs::config {
 
@@ -13,6 +13,8 @@ public:
 
     [[nodiscard]] virtual auto roomCorners() const -> const std::vector<data::Point>&   = 0;
     [[nodiscard]] virtual auto targetCorners() const -> const std::vector<data::Point>& = 0;
+
+    [[nodiscard]] virtual auto initialAgentInfos() const -> const std::vector<data::AgentInfo>& = 0;
 };
 
 }    // namespace scs::config
