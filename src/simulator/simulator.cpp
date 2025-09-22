@@ -1,3 +1,4 @@
+#include <agents/agentmanager.hpp>
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
 #include <memory>
@@ -15,9 +16,8 @@ public:
 
     explicit SimulatorImpl(const config::SimulatorConfig& config)
         : m_config(config)
-        , m_agents(m_config.initialAgentInfos()) {}
+        , m_agents(*this, m_config.initialAgentInfos()) {}
 
-    auto load() -> Result<void> override { return {}; }
     auto runFrame() -> void override {}
 
     [[nodiscard]] auto getRoomCorners() const -> const std::vector<data::Point>& override {
@@ -33,13 +33,13 @@ public:
     }
 
     [[nodiscard]] auto getAgentInfos() const -> const std::vector<data::AgentInfo>& override {
-        return m_agents;
+        return m_agents.getAgentInfos();
     }
 
 private:
     const config::SimulatorConfig& m_config;
 
-    std::vector<data::AgentInfo> m_agents;
+    agents::AgentManager m_agents;
 };
 
 }    // namespace

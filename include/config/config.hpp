@@ -69,10 +69,10 @@ private:
         {.loc = {.x = 100, .y = 850}, .size = 50, .color = {.r = 0, .g = 0, .b = 255}},
     };
     const std::vector<data::AgentInfo> m_initialAgentInfos = {
-        {.loc = {.x = 150, .y = 150}, .size = 10},
-        {.loc = {.x = 250, .y = 250}, .size = 20},
-        {.loc = {.x = 350, .y = 350}, .size = 30},
-        {.loc = {.x = 450, .y = 450}, .size = 40},
+        {.id = 2, .loc = {.x = 250, .y = 250}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 3, .loc = {.x = 350, .y = 350}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 4, .loc = {.x = 450, .y = 450}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 1, .loc = {.x = 550, .y = 550}, .size = 10, .type = data::AgentInfo::DEFAULT},
     };
 };
 

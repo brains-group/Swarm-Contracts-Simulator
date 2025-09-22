@@ -30,13 +30,12 @@ public:
     }
 
     auto run() -> Result<void> override {
-        auto res = m_simulator->load();
-        if (!res) { return res; }
-
         while (m_window.isOpen()) {
             while (const std::optional event = m_window.pollEvent()) {
                 if (event->is<sf::Event::Closed>()) { m_window.close(); }
             }
+
+            m_simulator->runFrame();
 
             m_window.clear();
             m_window.draw(m_room);

@@ -5,3 +5,7 @@ add_library(simulator
 target_include_directories(simulator PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
 )
+
+target_link_libraries(simulator PRIVATE
+    agents
+)
