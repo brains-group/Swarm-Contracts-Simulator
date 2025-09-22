@@ -1,12 +1,13 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <agents/agentcontroller.hpp>
 #include <agents/environmentinterface.hpp>
 #include <agents/impl/default.hpp>
 #include <data/agentinfo.hpp>
-#include <memory>
 #include <simulator/simulator.hpp>
-#include <vector>
 
 namespace scs::agents {
 

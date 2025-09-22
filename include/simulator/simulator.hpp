@@ -1,11 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <common/macros.hpp>
 #include <data/agentinfo.hpp>
 #include <data/materialinfo.hpp>
 #include <data/point.hpp>
-#include <memory>
-#include <vector>
 
 namespace scs::sim {
 

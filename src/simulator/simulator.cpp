@@ -1,9 +1,10 @@
+#include <memory>
+#include <vector>
+
 #include <agents/agentmanager.hpp>
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
-#include <memory>
 #include <simulator/simulator.hpp>
-#include <vector>
 
 namespace scs::sim {
 

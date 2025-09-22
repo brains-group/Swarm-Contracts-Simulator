@@ -1,8 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include <common/macros.hpp>
 #include <data/agentinfo.hpp>
-#include <memory>
 #include <simulator/simulator.hpp>
 
 namespace scs::agents {
