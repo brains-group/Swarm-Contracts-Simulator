@@ -17,6 +17,10 @@ public:
         return m_agentInfos;
     }
 
+    [[nodiscard]] auto getAgentInfo(uint64_t agentID) const -> const data::AgentInfo& override {
+        return m_agentInfos[agentID];
+    }
+
     auto runAgents() -> void override {
         for (auto& [agentPtr, envPtr] : m_agentControllers) { agentPtr->run(*envPtr); }
     };

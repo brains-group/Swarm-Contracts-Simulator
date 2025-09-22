@@ -9,9 +9,14 @@ class EnvironmentInterfaceImpl : public EnvironmentInterface {
 public:
     EnvironmentInterfaceImpl(sim::Simulator& sim, uint64_t agentID)
         : m_sim(sim)
-        , m_agentID(agentID) {
-        UNUSED(m_sim);
-        UNUSED(m_agentID);
+        , m_agentID(agentID) {}
+
+    [[nodiscard]] auto getLocation() const -> const data::Point& override {
+        return m_sim.getAgentInfo(m_agentID).loc;
+    }
+    [[nodiscard]] auto canMove(const data::Vector& vec) const -> bool override {
+        UNUSED(vec);
+        return false;
     }
 
 private:
