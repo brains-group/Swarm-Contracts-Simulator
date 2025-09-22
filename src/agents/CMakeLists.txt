@@ -1,4 +1,5 @@
 add_library(agents
+    agentmanager.cpp
     environmentinterface.cpp
 )
 

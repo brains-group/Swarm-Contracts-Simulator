@@ -17,7 +17,7 @@ public:
 
     explicit SimulatorImpl(const config::SimulatorConfig& config)
         : m_config(config)
-        , m_agents(*this, m_config.initialAgentInfos()) {}
+        , m_agents(agents::AgentManager::create(*this, m_config.initialAgentInfos())) {}
 
     auto runFrame() -> void override {}
 
@@ -34,13 +34,13 @@ public:
     }
 
     [[nodiscard]] auto getAgentInfos() const -> const std::vector<data::AgentInfo>& override {
-        return m_agents.getAgentInfos();
+        return m_agents->getAgentInfos();
     }
 
 private:
     const config::SimulatorConfig& m_config;
 
-    agents::AgentManager m_agents;
+    std::unique_ptr<agents::AgentManager> m_agents;
 };
 
 }    // namespace
