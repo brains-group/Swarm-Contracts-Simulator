@@ -35,8 +35,6 @@ public:
                 if (event->is<sf::Event::Closed>()) { m_window.close(); }
             }
 
-            m_simulator->runFrame();
-
             m_window.clear();
             m_window.draw(m_room);
             m_window.draw(m_target);
@@ -52,6 +50,10 @@ public:
             }
 
             m_window.display();
+
+            LOG(INFO) << "Running a frame";
+
+            m_simulator->runFrame();
         };
 
         return {};

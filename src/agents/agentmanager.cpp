@@ -1,15 +1,16 @@
 #include <agents/agentmanager.hpp>
+#include <common/logger.hpp>
 
 namespace scs::agents {
 
 class AgentManagerImpl : public AgentManager {
 public:
-    AgentManagerImpl(sim::Simulator& sim, const std::vector<data::AgentInfo>& agents)
+    AgentManagerImpl(sim::AgentSimulator& sim, const std::vector<data::AgentInfo>& agents)
         : m_agentInfos(agents) {
         m_agentControllers.reserve(m_agentInfos.size());
-        for (unsigned int i = 0; i < m_agentControllers.size(); i++) {
-            m_agentControllers.emplace_back(makeAgentController(m_agentInfos[i].type),
-                                            EnvironmentInterface::create(sim, m_agentInfos[i].id));
+        for (auto& m_agentInfo : m_agentInfos) {
+            m_agentControllers.emplace_back(makeAgentController(m_agentInfo.type),
+                                            EnvironmentInterface::create(sim, m_agentInfo.id));
         }
     }
 
@@ -22,10 +23,25 @@ public:
     }
 
     auto runAgents() -> void override {
-        for (auto& [agentPtr, envPtr] : m_agentControllers) { agentPtr->run(*envPtr); }
+        LOG(INFO) << "Running Agents (" << m_agentControllers.size() << ", " << m_agentInfos.size()
+                  << ")";
+        for (auto& [agentPtr, envPtr] : m_agentControllers) {
+            LOG(INFO) << "Running agent " << envPtr->getID();
+            agentPtr->run(*envPtr);
+        }
     };
 
+    [[nodiscard]] auto moveAgent(uint64_t agentID, const data::Vector& vec) -> bool override {
+        data::AgentInfo& agent = getAgentInfo(agentID);
+        agent.loc += vec;
+        return true;
+    }
+
 private:
+    [[nodiscard]] auto getAgentInfo(uint64_t agentID) -> data::AgentInfo& override {
+        return m_agentInfos[agentID];
+    }
+
     static auto makeAgentController(data::AgentInfo::Type agentType)
         -> std::unique_ptr<AgentController> {
         switch (agentType) {
@@ -38,7 +54,7 @@ private:
         m_agentControllers;
 };
 
-auto AgentManager::create(sim::Simulator& sim, const std::vector<data::AgentInfo>& agents)
+auto AgentManager::create(sim::AgentSimulator& sim, const std::vector<data::AgentInfo>& agents)
     -> std::unique_ptr<AgentManager> {
     return std::make_unique<AgentManagerImpl>(sim, agents);
 }

@@ -1,12 +1,11 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-
 #include <common/macros.hpp>
 #include <data/agentinfo.hpp>
 #include <data/materialinfo.hpp>
 #include <data/point.hpp>
+#include <memory>
+#include <vector>
 
 namespace scs::sim {
 
@@ -17,6 +16,8 @@ public:
     static auto create() -> std::unique_ptr<Simulator>;
 
     virtual auto runFrame() -> void = 0;
+
+    [[nodiscard]] virtual auto getFrameNumber() const -> unsigned int = 0;
 
     [[nodiscard]] virtual auto getRoomCorners() const -> const std::vector<data::Point>&      = 0;
     [[nodiscard]] virtual auto getTargetCorners() const -> const std::vector<data::Point>&    = 0;
