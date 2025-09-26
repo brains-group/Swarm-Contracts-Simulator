@@ -7,6 +7,8 @@
 #include <data/agentinfo.hpp>
 #include <data/materialinfo.hpp>
 
+#include "data/clientinfo.hpp"
+
 namespace scs::config {
 
 // TODO: Make this all read in from a config file
@@ -40,6 +42,9 @@ public:
     [[nodiscard]] auto initialAgentInfos() const -> const std::vector<data::AgentInfo>& override {
         return m_initialAgentInfos;
     }
+    [[nodiscard]] auto initialClientInfos() const -> const std::vector<data::ClientInfo>& override {
+        return m_initialClientInfos;
+    }
 
 private:
     // Visualizer Config
@@ -51,9 +56,9 @@ private:
     // Simulator Config
     const std::vector<data::Point> m_roomCorners = {
         {.x = 100, .y = 100},
-        {.x = 100, .y = 900},
-        {.x = 900, .y = 900},
-        {.x = 900, .y = 100},
+        {.x = 100, .y = 500},
+        {.x = 500, .y = 500},
+        {.x = 500, .y = 100},
         {.x = 100, .y = 100},
     };
     const std::vector<data::Point> m_targetCorners = {
@@ -64,16 +69,25 @@ private:
         {.x = 100, .y = 100},
     };
     const std::vector<data::MaterialInfo> m_materialInfos{
-        {.loc = {.x = 850, .y = 100}, .size = 50, .color = {.r = 255, .g = 0, .b = 0}},
-        {.loc = {.x = 850, .y = 850}, .size = 50, .color = {.r = 0, .g = 255, .b = 0}},
-        {.loc = {.x = 100, .y = 850}, .size = 50, .color = {.r = 0, .g = 0, .b = 255}},
+        {.loc = {.x = 450, .y = 100}, .size = 50, .color = {.r = 255, .g = 0, .b = 0}},
+        {.loc = {.x = 450, .y = 450}, .size = 50, .color = {.r = 0, .g = 255, .b = 0}},
+        {.loc = {.x = 100, .y = 450}, .size = 50, .color = {.r = 0, .g = 0, .b = 255}},
     };
     const std::vector<data::AgentInfo> m_initialAgentInfos = {
         {.id = 0, .loc = {.x = 250, .y = 250}, .size = 10, .type = data::AgentInfo::DEFAULT},
         {.id = 1, .loc = {.x = 350, .y = 350}, .size = 10, .type = data::AgentInfo::DEFAULT},
         {.id = 2, .loc = {.x = 450, .y = 450}, .size = 10, .type = data::AgentInfo::DEFAULT},
-        {.id = 3, .loc = {.x = 550, .y = 550}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 3, .loc = {.x = 170, .y = 283}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 4, .loc = {.x = 164, .y = 282}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 5, .loc = {.x = 274, .y = 173}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 6, .loc = {.x = 147, .y = 173}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 7, .loc = {.x = 047, .y = 284}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 8, .loc = {.x = 381, .y = 111}, .size = 10, .type = data::AgentInfo::DEFAULT},
+        {.id = 9, .loc = {.x = 383, .y = 132}, .size = 10, .type = data::AgentInfo::DEFAULT},
     };
-};
+    const std::vector<data::ClientInfo> m_initialClientInfos = {
+        {.id = 10, .type = data::ClientInfo::DEFAULT},
+    };
+};    // namespace scs::config
 
 }    // namespace scs::config

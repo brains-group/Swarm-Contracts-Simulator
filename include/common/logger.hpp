@@ -1,16 +1,15 @@
 #pragma once
 
 #include <chrono>
+#include <common/macros.hpp>
+#include <common/result.hpp>
+#include <common/singleton.hpp>
 #include <cstdint>
 #include <functional>
 #include <iostream>
 #include <mutex>
 #include <sstream>
 #include <thread>
-
-#include <common/macros.hpp>
-#include <common/result.hpp>
-#include <common/singleton.hpp>
 
 #define LOG(LEVEL) \
     if (false)     \
@@ -109,6 +108,7 @@ private:
 };
 
 inline auto simpleConsoleLogger(const LogMessage& msg) -> void {
+    if (msg.level < LogLevel::DEBUG) { return; }
     std::cout << to_string(msg.level).value_or("UNKNOWN") << " - " << msg.file << ":" << msg.line
               << " " << msg.func << ": " << msg.msg << "\n";
 }

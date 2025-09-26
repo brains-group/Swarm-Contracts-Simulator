@@ -1,17 +1,18 @@
 #pragma once
 
 #include <common/macros.hpp>
+#include <data/vector.hpp>
+#include <optional>
 #include <simulator/simulator.hpp>
-
-#include "data/vector.hpp"
 
 namespace scs::sim {
 
-class AgentSimulator : public Simulator {
+class AgentSimulator : virtual public Simulator {
 public:
     INTERFACE_CTOR_DTORS(AgentSimulator);
 
-    [[nodiscard]] virtual auto moveAgent(uint64_t agentID, const data::Vector& vec) -> bool = 0;
+    [[nodiscard]] virtual auto moveAgent(uint64_t agentID, const data::Vector& vec) -> bool    = 0;
+    [[nodiscard]] virtual auto takeNextOrder(uint64_t m_agentID) -> std::optional<data::Color> = 0;
 };
 
 }    // namespace scs::sim

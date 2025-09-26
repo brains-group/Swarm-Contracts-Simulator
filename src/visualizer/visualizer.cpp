@@ -51,8 +51,6 @@ public:
 
             m_window.display();
 
-            LOG(INFO) << "Running a frame";
-
             m_simulator->runFrame();
         };
 
