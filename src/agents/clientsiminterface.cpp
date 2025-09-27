@@ -1,5 +1,6 @@
-#include <agents/clientsiminterface.hpp>
 #include <memory>
+
+#include <agents/clientsiminterface.hpp>
 #include <simulator/agentsimulator.hpp>
 #include <simulator/clientsimulator.hpp>
 

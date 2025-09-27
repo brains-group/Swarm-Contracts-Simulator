@@ -1,15 +1,16 @@
 #pragma once
 
 #include <chrono>
-#include <common/macros.hpp>
-#include <common/result.hpp>
-#include <common/singleton.hpp>
 #include <cstdint>
 #include <functional>
 #include <iostream>
 #include <mutex>
 #include <sstream>
 #include <thread>
+
+#include <common/macros.hpp>
+#include <common/result.hpp>
+#include <common/singleton.hpp>
 
 #define LOG(LEVEL) \
     if (false)     \

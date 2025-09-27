@@ -1,5 +1,6 @@
-#include <agents/agentsiminterface.hpp>
 #include <cstdlib>
+
+#include <agents/agentsiminterface.hpp>
 #include <simulator/agentsimulator.hpp>
 
 #include "data/color.hpp"

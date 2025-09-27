@@ -1,14 +1,15 @@
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include <agents/agentmanager.hpp>
 #include <agents/agentsiminterface.hpp>
 #include <common/logger.hpp>
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
-#include <memory>
 #include <simulator/agentsimulator.hpp>
 #include <simulator/clientsimulator.hpp>
 #include <simulator/simulator.hpp>
-#include <utility>
-#include <vector>
 
 namespace scs::sim {
 

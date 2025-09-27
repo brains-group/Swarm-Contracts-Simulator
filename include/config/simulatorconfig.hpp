@@ -1,11 +1,12 @@
 #pragma once
 
+#include <vector>
+
 #include <common/macros.hpp>
 #include <data/agentinfo.hpp>
 #include <data/clientinfo.hpp>
 #include <data/materialinfo.hpp>
 #include <data/point.hpp>
-#include <vector>
 
 namespace scs::config {
 

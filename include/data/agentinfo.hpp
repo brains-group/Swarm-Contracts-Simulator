@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+
 #include <data/point.hpp>
 
 namespace scs::data {

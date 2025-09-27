@@ -1,8 +1,9 @@
 #pragma once
 
+#include <optional>
+
 #include <common/macros.hpp>
 #include <data/vector.hpp>
-#include <optional>
 #include <simulator/simulator.hpp>
 
 namespace scs::sim {
