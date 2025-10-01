@@ -4,7 +4,6 @@
 
 #include <common/macros.hpp>
 #include <data/agentinfo.hpp>
-#include <data/clientinfo.hpp>
 #include <data/materialinfo.hpp>
 #include <data/point.hpp>
 
@@ -19,8 +18,6 @@ public:
     [[nodiscard]] virtual auto materialInfos() const -> const std::vector<data::MaterialInfo>& = 0;
 
     [[nodiscard]] virtual auto initialAgentInfos() const -> const std::vector<data::AgentInfo>& = 0;
-    [[nodiscard]] virtual auto initialClientInfos() const
-        -> const std::vector<data::ClientInfo>& = 0;
 };
 
 }    // namespace scs::config

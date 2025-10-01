@@ -31,6 +31,7 @@ public:
     [[nodiscard]] virtual auto move(const data::Vector& vec) const -> bool    = 0;
 
     // ORDERS
+    virtual auto               placeOrder(const data::Color& order) const -> void        = 0;
     [[nodiscard]] virtual auto holdingOrder() const -> bool                              = 0;
     [[nodiscard]] virtual auto currentOrder() const -> const std::optional<data::Color>& = 0;
     [[nodiscard]] virtual auto takeNextOrder() -> const std::optional<data::Color>&      = 0;

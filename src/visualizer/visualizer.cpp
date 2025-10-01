@@ -45,6 +45,7 @@ public:
             }
 
             for (const auto& agent : m_simulator->getAgentInfos()) {
+                if (!agent.physical) { continue; }
                 m_agent.update(agent);
                 m_window.draw(m_agent);
             }

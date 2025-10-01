@@ -8,29 +8,24 @@
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
 #include <simulator/agentsimulator.hpp>
-#include <simulator/clientsimulator.hpp>
 #include <simulator/simulator.hpp>
 
 namespace scs::sim {
 
 namespace {
 
-class SimulatorImpl
-    : public sim::AgentSimulator
-    , public sim::ClientSimulator {
+class SimulatorImpl : public sim::AgentSimulator {
 public:
     DELETE_COPY_MOVE(SimulatorImpl);
     DEFAULT_DTOR(SimulatorImpl);
 
     explicit SimulatorImpl(const config::SimulatorConfig& config)
         : m_config(config)
-        , m_agents(agents::AgentManager::create(*this, m_config.initialAgentInfos(), *this,
-                                                m_config.initialClientInfos())) {}
+        , m_agents(agents::AgentManager::create(*this, m_config.initialAgentInfos())) {}
 
     auto runFrame() -> void override {
         ++m_frameNumber;
         LOG(FINE) << "Running frame " << m_frameNumber;
-        m_agents->runClients();
         m_agents->runAgents();
     }
 

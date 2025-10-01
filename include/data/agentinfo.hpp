@@ -9,8 +9,9 @@ struct AgentInfo {
     uint64_t id;
     Point    loc;
     float    size;
+    bool     physical;
 
-    enum Type : uint8_t { DEFAULT } type;
+    enum Type : uint8_t { CLIENT, WORKER } type;
 };
 
 }    // namespace scs::data

@@ -5,7 +5,7 @@
 
 namespace scs::agents::impl {
 
-class DefaultAgent : public AgentController {
+class DefaultWorker : public AgentController {
 public:
     auto run(AgentSimInterface& sim) -> void override {
         if (!sim.currentOrder() && !sim.takeNextOrder()) { return; }

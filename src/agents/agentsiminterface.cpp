@@ -58,6 +58,10 @@ public:
         return m_sim.moveAgent(m_agentID, vec);
     }
 
+    auto placeOrder(const data::Color& order) const -> void override {
+        m_sim.placeOrder(m_agentID, order);
+    }
+
     [[nodiscard]] auto holdingOrder() const -> bool override { return m_holdingOrder; }
 
     [[nodiscard]] auto currentOrder() const -> const std::optional<data::Color>& override {
