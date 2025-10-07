@@ -11,4 +11,5 @@ if(BUILD_TESTING)
 endif()
 
 add_subdirectory(data)
+add_subdirectory(simulator)
 add_subdirectory(visualizer)
