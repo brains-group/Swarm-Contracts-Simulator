@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 4.0.3) # This is not a hard requirement, just what I have installed
 project(swarm_contracts_simulator LANGUAGES CXX)
 
+set(BUILD_TESTING OFF CACHE BOOL "Enable building tests")
+include(CTest)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(CMAKE_CXX_STANDARD 23)
