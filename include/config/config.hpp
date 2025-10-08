@@ -4,6 +4,7 @@
 #include <common/singleton.hpp>
 #include <config/simulatorconfig.hpp>
 #include <config/visualizerconfig.hpp>
+#include <data/agent.hpp>
 
 namespace scs::config {
 
@@ -30,6 +31,9 @@ public:
     [[nodiscard]] auto targetCorners() const -> const std::vector<data::Point>& override {
         return m_targetCorners;
     }
+    [[nodiscard]] auto initialAgents() const -> const std::vector<data::Agent>& override {
+        return m_agents;
+    };
 
 private:
     // Visualizer Config
@@ -52,6 +56,16 @@ private:
         {.x = 200, .y = 200},
         {.x = 200, .y = 100},
         {.x = 100, .y = 100},
+    };
+    const std::vector<data::Agent> m_agents = {
+        data::Agent(
+            std::make_shared<data::Transform>(data::Point(100, 100), data::Angle::Zero, 50)),
+        data::Agent(
+            std::make_shared<data::Transform>(data::Point(200, 200), data::degrees(30), 60)),
+        data::Agent(
+            std::make_shared<data::Transform>(data::Point(300, 300), data::degrees(60), 70)),
+        data::Agent(
+            std::make_shared<data::Transform>(data::Point(400, 400), data::degrees(90), 80)),
     };
 };
 

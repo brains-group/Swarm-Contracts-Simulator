@@ -1,4 +1,4 @@
-add_executable(visualizer
+add_executable(scs_visualizer
     main.cpp
 )
 
@@ -11,4 +11,4 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-target_link_libraries(visualizer PRIVATE SFML::Graphics)
+target_link_libraries(scs_visualizer scs_simulator SFML::Graphics)

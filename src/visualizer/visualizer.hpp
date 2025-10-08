@@ -1,11 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <common/logger.hpp>
 #include <common/macros.hpp>
 #include <config/config.hpp>
 #include <config/visualizerconfig.hpp>
 #include <simulator/simulator.hpp>
 
+#include "drawables/agent.hpp"
 #include "drawables/room.hpp"
 #include "drawables/target.hpp"
 
@@ -32,6 +34,14 @@ public:
             m_window.draw(m_room);
             m_window.draw(m_target);
 
+            for (const data::Agent& agent : m_simulator.getAgents()) {
+                const data::Transform& trans = agent.getTransform();
+                m_agent.setPosition({trans.loc.x, trans.loc.y});
+                m_agent.setRotation(sf::radians(trans.rot.asRadians()));
+                m_agent.setScale({trans.size, trans.size});
+                m_window.draw(m_agent);
+            }
+
             m_window.display();
 
             while (std::optional<sf::Event> event = m_window.pollEvent()) {
@@ -51,6 +61,7 @@ private:
 
     drawables::Room   m_room;
     drawables::Target m_target;
+    drawables::Agent  m_agent;
 };
 
 }    // namespace scs::vis
