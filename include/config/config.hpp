@@ -1,12 +1,11 @@
 #pragma once
 
+#include <agents/controller.hpp>
 #include <common/logger.hpp>
 #include <common/macros.hpp>
 #include <common/singleton.hpp>
 #include <config/simulatorconfig.hpp>
 #include <config/visualizerconfig.hpp>
-#include <data/agent.hpp>
-#include <data/controller.hpp>
 #include <data/material.hpp>
 
 namespace scs::config {
@@ -37,7 +36,7 @@ public:
     [[nodiscard]] auto materialStores() const -> const std::vector<data::MaterialStore>& override {
         return m_materialStores;
     }
-    [[nodiscard]] auto initialAgents() const -> const std::vector<data::Agent>& override {
+    [[nodiscard]] auto initialAgents() const -> const std::vector<agents::Agent>& override {
         return m_agents;
     };
 
@@ -83,28 +82,28 @@ private:
          .size = {.x = 100, .y = 100},
          }},
     };
-    const std::vector<data::Agent> m_agents = {
-        data::Agent(data::Controller::create(data::Controller::Type::Worker),
-                    data::MakeTransform(data::Point(100, 100), data::Angle::Zero, 50),
-                    data::MakePart(std::vector<std::optional<data::Material>>(
-                        {data::Material::Red, data::Material::Green, data::Material::Blue})),
-                    data::MakeBalance(100)),
-        data::Agent(
-            data::Controller::create(data::Controller::Type::Worker),
-            data::MakeTransform(data::Point(200, 200), data::degrees(30), 60),
-            data::MakePart(std::vector<std::optional<data::Material>>({data::Material::Green})),
-            data::MakeBalance(100)),
-        data::Agent(data::Controller::create(data::Controller::Type::Worker),
-                    data::MakeTransform(data::Point(300, 300), data::degrees(60), 70),
-                    data::MakePart(std::vector<std::optional<data::Material>>(
-                        {data::Material::Blue, data::Material::Green, data::Material::Blue,
-                         data::Material::Red, std::nullopt, data::Material::Red})),
-                    data::MakeBalance(100)),
-        data::Agent(data::Controller::create(data::Controller::Type::Worker),
-                    data::MakeTransform(data::Point(400, 400), data::degrees(90), 80), nullptr,
-                    data::MakeBalance(100)),
-        data::Agent(data::Controller::create(data::Controller::Type::Client), nullptr, nullptr,
-                    data::MakeBalance(100))};
+    const std::vector<agents::Agent> m_agents = {
+        agents::Agent(0, agents::Controller::create(agents::Controller::Type::Worker),
+                      agents::MakeTransform(data::Point(100, 100), data::Angle::Zero, 50),
+                      agents::MakePart(std::vector<std::optional<data::Material>>(
+                          {data::Material::Red, data::Material::Green, data::Material::Blue})),
+                      agents::MakeBalance(100)),
+        agents::Agent(
+            1, agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(200, 200), data::degrees(30), 60),
+            agents::MakePart(std::vector<std::optional<data::Material>>({data::Material::Green})),
+            agents::MakeBalance(100)),
+        agents::Agent(2, agents::Controller::create(agents::Controller::Type::Worker),
+                      agents::MakeTransform(data::Point(300, 300), data::degrees(60), 70),
+                      agents::MakePart(std::vector<std::optional<data::Material>>(
+                          {data::Material::Blue, data::Material::Green, data::Material::Blue,
+                           data::Material::Red, std::nullopt, data::Material::Red})),
+                      agents::MakeBalance(100)),
+        agents::Agent(3, agents::Controller::create(agents::Controller::Type::Worker),
+                      agents::MakeTransform(data::Point(400, 400), data::degrees(90), 80), nullptr,
+                      agents::MakeBalance(100)),
+        agents::Agent(4, agents::Controller::create(agents::Controller::Type::Client), nullptr,
+                      nullptr, agents::MakeBalance(100))};
 };
 
 }    // namespace scs::config

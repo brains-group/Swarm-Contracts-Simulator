@@ -1,8 +1,8 @@
 #pragma once
 
+#include <agents/agent.hpp>
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
-#include <data/agent.hpp>
 
 namespace scs::sim {
 
@@ -26,10 +26,10 @@ public:
         return m_config.materialStores();
     }
 
-    [[nodiscard]] auto getAgents() const -> const std::vector<data::Agent>& { return m_agents; }
+    [[nodiscard]] auto getAgents() const -> const std::vector<agents::Agent>& { return m_agents; }
 
     auto runFrame() -> void {
-        for (data::Agent& agent : m_agents) {
+        for (agents::Agent& agent : m_agents) {
             if (agent.hasController()) { agent.getController().run(); }
         }
     }
@@ -39,7 +39,7 @@ private:
     // If we want this in the future, use a pointer
     config::SimulatorConfig& m_config;
 
-    std::vector<data::Agent> m_agents;
+    std::vector<agents::Agent> m_agents;
 };
 
 }    // namespace scs::sim

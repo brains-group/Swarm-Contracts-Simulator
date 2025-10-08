@@ -43,7 +43,7 @@ public:
                 m_window.draw(m_materialStore);
             }
 
-            for (const data::Agent& agent : m_simulator.getAgents()) {
+            for (const agents::Agent& agent : m_simulator.getAgents()) {
                 if (!agent.hasTransform()) { continue; }
                 const data::Transform& trans = agent.getTransform();
 

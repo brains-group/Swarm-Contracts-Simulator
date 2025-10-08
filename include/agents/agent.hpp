@@ -5,8 +5,8 @@
 #include <utility>
 #include <vector>
 
+#include <agents/controller.hpp>
 #include <common/macros.hpp>
-#include <data/controller.hpp>
 #include <data/part.hpp>
 #include <data/transform.hpp>
 
@@ -60,8 +60,7 @@ private:                                                                        
     public:                                                                           \
         auto getID() const -> uint64_t { return m_id; }                               \
         DEFAULT_CTOR_DTOR(Agent);                                                     \
-        DEFAULT_MOVE(Agent);                                                          \
-        DELETE_COPY(Agent);                                                           \
+        DEFAULT_COPY_MOVE(Agent);                                                     \
         explicit Agent(uint64_t id, FOR_EACH_LIST(ADD_MOVE_PTR_WRAPPER, __VA_ARGS__)) \
             : m_id(id)                                                                \
             , FOR_EACH_LIST(ASSIGN_MEMBER, __VA_ARGS__) {}                            \
@@ -70,15 +69,17 @@ private:                                                                        
     FOR_EACH(COMPONENT_VIEW, __VA_ARGS__)                                             \
     FOR_EACH(MAKE_COMPONENT, __VA_ARGS__)
 
-namespace scs::data {
+namespace scs::agents {
 
+using data::Part;
+using data::Transform;
 using Balance = uint64_t;
 
 // NOLINTBEGIN
 AGENT_CLASS(Controller, Transform, Part, Balance)
 // NOLINTEND
 
-}    // namespace scs::data
+}    // namespace scs::agents
 
 #undef ADD_COMPONENT
 #undef ADD_COMPONENT_HELPER

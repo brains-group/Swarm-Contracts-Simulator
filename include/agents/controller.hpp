@@ -29,14 +29,14 @@
         switch (type) { FOR_EACH(CONTROLLER_CASE, __VA_ARGS__) }               \
     }
 
-namespace scs::data {
+namespace scs::agents {
 
 CONTROLLER_TYPES(Client, Worker);
 
-inline auto ClientController::run() -> void { LOG(INFO) << "Running a client"; }
-inline auto WorkerController::run() -> void { LOG(INFO) << "Running a worker"; }
+inline auto ClientController::run() -> void { LOG(FINE) << "Running a client"; }
+inline auto WorkerController::run() -> void { LOG(FINE) << "Running a worker"; }
 
-}    // namespace scs::data
+}    // namespace scs::agents
 
 #undef CONTROLLER_CASE
 #undef CONTROLLER_SUBCLASS
