@@ -46,6 +46,10 @@ private:                                                                        
 
 #define ADD_MOVE_PTR_WRAPPER(TYPE) std::shared_ptr<TYPE> TYPE##_
 #define ASSIGN_MEMBER(TYPE)        m_##TYPE(std::move(TYPE##_))
+#define MAKE_COMPONENT(TYPE)                                                            \
+    template <class... Args> auto Make##TYPE(Args&&... args) -> std::shared_ptr<TYPE> { \
+        return std::make_unique<TYPE>(std::forward<Args>(args)...);                     \
+    }
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define AGENT_CLASS(...)                                                 \
@@ -57,11 +61,16 @@ private:                                                                        
             : FOR_EACH_LIST(ASSIGN_MEMBER, __VA_ARGS__) {}               \
         FOR_EACH(ADD_COMPONENT, __VA_ARGS__)                             \
     };                                                                   \
-    FOR_EACH(COMPONENT_VIEW, __VA_ARGS__)
+    FOR_EACH(COMPONENT_VIEW, __VA_ARGS__)                                \
+    FOR_EACH(MAKE_COMPONENT, __VA_ARGS__)
 
 namespace scs::data {
 
-AGENT_CLASS(Controller, Transform, Part)
+using Balance = uint64_t;
+
+// NOLINTBEGIN
+AGENT_CLASS(Controller, Transform, Part, Balance)
+// NOLINTEND
 
 }    // namespace scs::data
 
@@ -73,5 +82,6 @@ AGENT_CLASS(Controller, Transform, Part)
 
 #undef ADD_MOVE_PTR_WRAPPER
 #undef ASSIGN_MEMBER
+#undef MAKE_COMPONENT
 
 #undef AGENT_CLASS

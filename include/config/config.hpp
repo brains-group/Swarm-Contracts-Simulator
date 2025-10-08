@@ -85,22 +85,26 @@ private:
     };
     const std::vector<data::Agent> m_agents = {
         data::Agent(data::Controller::create(data::Controller::Type::Worker),
-                    std::make_shared<data::Transform>(data::Point(100, 100), data::Angle::Zero, 50),
-                    std::make_shared<data::Part>(std::vector<std::optional<data::Material>>(
-                        {data::Material::Red, data::Material::Green, data::Material::Blue}))),
+                    data::MakeTransform(data::Point(100, 100), data::Angle::Zero, 50),
+                    data::MakePart(std::vector<std::optional<data::Material>>(
+                        {data::Material::Red, data::Material::Green, data::Material::Blue})),
+                    data::MakeBalance(100)),
+        data::Agent(
+            data::Controller::create(data::Controller::Type::Worker),
+            data::MakeTransform(data::Point(200, 200), data::degrees(30), 60),
+            data::MakePart(std::vector<std::optional<data::Material>>({data::Material::Green})),
+            data::MakeBalance(100)),
         data::Agent(data::Controller::create(data::Controller::Type::Worker),
-                    std::make_shared<data::Transform>(data::Point(200, 200), data::degrees(30), 60),
-                    std::make_shared<data::Part>(
-                        std::vector<std::optional<data::Material>>({data::Material::Green}))),
-        data::Agent(data::Controller::create(data::Controller::Type::Worker),
-                    std::make_shared<data::Transform>(data::Point(300, 300), data::degrees(60), 70),
-                    std::make_shared<data::Part>(std::vector<std::optional<data::Material>>(
+                    data::MakeTransform(data::Point(300, 300), data::degrees(60), 70),
+                    data::MakePart(std::vector<std::optional<data::Material>>(
                         {data::Material::Blue, data::Material::Green, data::Material::Blue,
-                         data::Material::Red, std::nullopt, data::Material::Red}))),
+                         data::Material::Red, std::nullopt, data::Material::Red})),
+                    data::MakeBalance(100)),
         data::Agent(data::Controller::create(data::Controller::Type::Worker),
-                    std::make_shared<data::Transform>(data::Point(400, 400), data::degrees(90), 80),
-                    nullptr),
-        data::Agent(data::Controller::create(data::Controller::Type::Client), nullptr, nullptr)};
+                    data::MakeTransform(data::Point(400, 400), data::degrees(90), 80), nullptr,
+                    data::MakeBalance(100)),
+        data::Agent(data::Controller::create(data::Controller::Type::Client), nullptr, nullptr,
+                    data::MakeBalance(100))};
 };
 
 }    // namespace scs::config
