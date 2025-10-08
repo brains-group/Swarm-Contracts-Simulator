@@ -9,7 +9,7 @@ static constexpr float TAU = 2.0 * std::numbers::pi_v<float>;
 
 constexpr float DEFAULT_ANGLE_COMPARISON_EPSILON = 1e-6;
 
-struct Angle {
+class Angle {
 public:
     [[nodiscard]] auto asRadians() const -> float;
     [[nodiscard]] auto asDegrees() const -> float;

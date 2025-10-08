@@ -1,10 +1,12 @@
 #pragma once
 
+#include <common/logger.hpp>
 #include <common/macros.hpp>
 #include <common/singleton.hpp>
 #include <config/simulatorconfig.hpp>
 #include <config/visualizerconfig.hpp>
 #include <data/agent.hpp>
+#include <data/material.hpp>
 
 namespace scs::config {
 
@@ -58,14 +60,19 @@ private:
         {.x = 100, .y = 100},
     };
     const std::vector<data::Agent> m_agents = {
-        data::Agent(
-            std::make_shared<data::Transform>(data::Point(100, 100), data::Angle::Zero, 50)),
-        data::Agent(
-            std::make_shared<data::Transform>(data::Point(200, 200), data::degrees(30), 60)),
-        data::Agent(
-            std::make_shared<data::Transform>(data::Point(300, 300), data::degrees(60), 70)),
-        data::Agent(
-            std::make_shared<data::Transform>(data::Point(400, 400), data::degrees(90), 80)),
+        data::Agent(std::make_shared<data::Transform>(data::Point(100, 100), data::Angle::Zero, 50),
+                    std::make_shared<data::Part>(std::vector<std::optional<data::Material>>(
+                        {data::Material::Red, data::Material::Green, data::Material::Blue}))),
+        data::Agent(std::make_shared<data::Transform>(data::Point(200, 200), data::degrees(30), 60),
+                    std::make_shared<data::Part>(
+                        std::vector<std::optional<data::Material>>({data::Material::Green}))),
+        data::Agent(std::make_shared<data::Transform>(data::Point(300, 300), data::degrees(60), 70),
+                    std::make_shared<data::Part>(std::vector<std::optional<data::Material>>(
+                        {data::Material::Blue, data::Material::Green, data::Material::Blue,
+                         data::Material::Red, std::nullopt, data::Material::Red}))),
+        data::Agent(std::make_shared<data::Transform>(data::Point(400, 400), data::degrees(90), 80),
+                    nullptr),
+        data::Agent(nullptr, nullptr),
     };
 };
 

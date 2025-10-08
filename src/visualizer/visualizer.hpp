@@ -35,10 +35,17 @@ public:
             m_window.draw(m_target);
 
             for (const data::Agent& agent : m_simulator.getAgents()) {
+                if (!agent.hasTransform()) { continue; }
                 const data::Transform& trans = agent.getTransform();
+
                 m_agent.setPosition({trans.loc.x, trans.loc.y});
                 m_agent.setRotation(sf::radians(trans.rot.asRadians()));
                 m_agent.setScale({trans.size, trans.size});
+                if (agent.hasPart()) {
+                    m_agent.setPart(agent.getPart());
+                } else {
+                    m_agent.setPart({});
+                }
                 m_window.draw(m_agent);
             }
 

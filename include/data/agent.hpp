@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <common/macros.hpp>
+#include <data/part.hpp>
 #include <data/transform.hpp>
 
 #define ADD_COMPONENT_HELPER(TYPE, ...)                                           \
@@ -59,7 +60,7 @@ private:                                                                        
 
 namespace scs::data {
 
-AGENT_CLASS(Transform)
+AGENT_CLASS(Transform, Part)
 
 }    // namespace scs::data
 

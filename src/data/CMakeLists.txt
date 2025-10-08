@@ -1,5 +1,6 @@
 add_library(scs_data
     angle.cpp
+    material.cpp
     point.cpp
 )
 
