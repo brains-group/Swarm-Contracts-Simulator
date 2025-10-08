@@ -52,16 +52,22 @@ private:                                                                        
     }
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define AGENT_CLASS(...)                                                 \
-    class Agent {                                                        \
-    public:                                                              \
-        DEFAULT_CTOR_DTOR(Agent);                                        \
-        DEFAULT_COPY_MOVE(Agent);                                        \
-        explicit Agent(FOR_EACH_LIST(ADD_MOVE_PTR_WRAPPER, __VA_ARGS__)) \
-            : FOR_EACH_LIST(ASSIGN_MEMBER, __VA_ARGS__) {}               \
-        FOR_EACH(ADD_COMPONENT, __VA_ARGS__)                             \
-    };                                                                   \
-    FOR_EACH(COMPONENT_VIEW, __VA_ARGS__)                                \
+#define AGENT_CLASS(...)                                                              \
+    class Agent {                                                                     \
+    private:                                                                          \
+        uint64_t m_id;                                                                \
+                                                                                      \
+    public:                                                                           \
+        auto getID() const -> uint64_t { return m_id; }                               \
+        DEFAULT_CTOR_DTOR(Agent);                                                     \
+        DEFAULT_MOVE(Agent);                                                          \
+        DELETE_COPY(Agent);                                                           \
+        explicit Agent(uint64_t id, FOR_EACH_LIST(ADD_MOVE_PTR_WRAPPER, __VA_ARGS__)) \
+            : m_id(id)                                                                \
+            , FOR_EACH_LIST(ASSIGN_MEMBER, __VA_ARGS__) {}                            \
+        FOR_EACH(ADD_COMPONENT, __VA_ARGS__)                                          \
+    };                                                                                \
+    FOR_EACH(COMPONENT_VIEW, __VA_ARGS__)                                             \
     FOR_EACH(MAKE_COMPONENT, __VA_ARGS__)
 
 namespace scs::data {
