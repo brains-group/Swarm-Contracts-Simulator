@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <common/macros.hpp>
+#include <data/controller.hpp>
 #include <data/part.hpp>
 #include <data/transform.hpp>
 
@@ -60,7 +61,7 @@ private:                                                                        
 
 namespace scs::data {
 
-AGENT_CLASS(Transform, Part)
+AGENT_CLASS(Controller, Transform, Part)
 
 }    // namespace scs::data
 

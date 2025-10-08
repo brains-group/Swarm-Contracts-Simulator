@@ -29,6 +29,8 @@ public:
 
     void run() {
         while (m_window.isOpen()) {
+            m_simulator.runFrame();
+
             m_window.clear();
 
             m_window.draw(m_room);

@@ -24,6 +24,12 @@ public:
 
     [[nodiscard]] auto getAgents() const -> const std::vector<data::Agent>& { return m_agents; }
 
+    auto runFrame() -> void {
+        for (data::Agent& agent : m_agents) {
+            if (agent.hasController()) { agent.getController().run(); }
+        }
+    }
+
 private:
     // NOTE: This is why we cannot copy the type, references aren't reassignable.
     // If we want this in the future, use a pointer
