@@ -22,6 +22,10 @@ public:
         return m_config.targetCorners();
     }
 
+    [[nodiscard]] auto getMaterialStores() const -> const std::vector<data::MaterialStore>& {
+        return m_config.materialStores();
+    }
+
     [[nodiscard]] auto getAgents() const -> const std::vector<data::Agent>& { return m_agents; }
 
     auto runFrame() -> void {

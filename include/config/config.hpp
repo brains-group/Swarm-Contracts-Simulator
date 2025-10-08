@@ -34,6 +34,9 @@ public:
     [[nodiscard]] auto targetCorners() const -> const std::vector<data::Point>& override {
         return m_targetCorners;
     }
+    [[nodiscard]] auto materialStores() const -> const std::vector<data::MaterialStore>& override {
+        return m_materialStores;
+    }
     [[nodiscard]] auto initialAgents() const -> const std::vector<data::Agent>& override {
         return m_agents;
     };
@@ -59,6 +62,26 @@ private:
         {.x = 200, .y = 200},
         {.x = 200, .y = 100},
         {.x = 100, .y = 100},
+    };
+    const std::vector<data::MaterialStore> m_materialStores = {
+        {  .material = data::Material::Red,
+         .space =
+         {
+         .loc  = {.x = 800, .y = 100},
+         .size = {.x = 100, .y = 100},
+         }},
+        {.material = data::Material::Green,
+         .space =
+         {
+         .loc  = {.x = 800, .y = 800},
+         .size = {.x = 100, .y = 100},
+         }},
+        { .material = data::Material::Blue,
+         .space =
+         {
+         .loc  = {.x = 100, .y = 800},
+         .size = {.x = 100, .y = 100},
+         }},
     };
     const std::vector<data::Agent> m_agents = {
         data::Agent(data::Controller::create(data::Controller::Type::Worker),

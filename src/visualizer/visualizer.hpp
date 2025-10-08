@@ -8,6 +8,7 @@
 #include <simulator/simulator.hpp>
 
 #include "drawables/agent.hpp"
+#include "drawables/materialstore.hpp"
 #include "drawables/room.hpp"
 #include "drawables/target.hpp"
 
@@ -35,6 +36,12 @@ public:
 
             m_window.draw(m_room);
             m_window.draw(m_target);
+            for (const data::MaterialStore& mat : m_simulator.getMaterialStores()) {
+                m_materialStore.setPosition({mat.space.loc.x, mat.space.loc.y});
+                m_materialStore.setScale({mat.space.size.x, mat.space.size.y});
+                m_materialStore.setColor({mat.material.r, mat.material.g, mat.material.b});
+                m_window.draw(m_materialStore);
+            }
 
             for (const data::Agent& agent : m_simulator.getAgents()) {
                 if (!agent.hasTransform()) { continue; }
@@ -68,9 +75,10 @@ private:
 
     sf::RenderWindow m_window;
 
-    drawables::Room   m_room;
-    drawables::Target m_target;
-    drawables::Agent  m_agent;
+    drawables::Room          m_room;
+    drawables::Target        m_target;
+    drawables::MaterialStore m_materialStore;
+    drawables::Agent         m_agent;
 };
 
 }    // namespace scs::vis
