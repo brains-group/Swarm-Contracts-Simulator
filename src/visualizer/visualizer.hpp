@@ -11,6 +11,7 @@
 #include "drawables/materialstore.hpp"
 #include "drawables/room.hpp"
 #include "drawables/target.hpp"
+#include "texturemanager.hpp"
 
 namespace scs::vis {
 
@@ -21,8 +22,10 @@ public:
         , m_simulator(config::Config::instance())
         , m_window(sf::VideoMode({m_config.windowWidth(), m_config.windowHeight()}),
                    m_config.windowName())
+        , m_assetManager("assets")
         , m_room(m_simulator.getRoomRocners())
-        , m_target(m_simulator.getTargetCorners()) {
+        , m_target(m_simulator.getTargetCorners())
+        , m_agent(m_assetManager.getTexture("textures/agent.png")) {
         m_window.setFramerateLimit(m_config.framerateLimit());
     }
     DELETE_COPY_MOVE(Visualizer);
@@ -74,6 +77,8 @@ private:
     sim::Simulator m_simulator;
 
     sf::RenderWindow m_window;
+
+    scs::vis::AssetManager m_assetManager;
 
     drawables::Room          m_room;
     drawables::Target        m_target;

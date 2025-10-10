@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <common/logger.hpp>
 #include <data/part.hpp>
 
@@ -13,16 +14,13 @@ class Agent
     : public sf::Drawable
     , public sf::Transformable {
 public:
-    Agent()
-        : m_outlineCircle(1)
-        , m_outlineRect({1, 1})
+    explicit Agent(const sf::Texture& texture)
+        : m_sprite(texture)
         , m_materialRect({1, 1}) {
-        m_outlineCircle.setFillColor(sf::Color::White);
-        m_outlineCircle.setOrigin({1, 1});
-
-        m_outlineRect.setOrigin({1, 1});
-        m_outlineRect.setFillColor(sf::Color::White);
-        m_outlineRect.rotate(sf::degrees(45));
+        auto size = texture.getSize();
+        m_sprite.setScale({2.0F / size.x, 2.0F / size.y});
+        m_sprite.setOrigin({size.x / 2.0F, size.y / 2.0F});
+        m_sprite.rotate(sf::degrees(-45));
     }
 
     void setPart(const data::Part& part) {
@@ -47,8 +45,7 @@ public:
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
         states.transform = getTransform();
-        target.draw(m_outlineCircle, states);
-        target.draw(m_outlineRect, states);
+        target.draw(m_sprite, states);
 
         unsigned int partDims = std::ceil(std::sqrt(m_partColors.size()));
         float        matScale = 1.0F / static_cast<float>(partDims);
@@ -58,15 +55,14 @@ private:
                 unsigned int index = (y * partDims) + x;
                 if (index >= m_partColors.size()) { break; }
                 m_materialRect.setFillColor(m_partColors[index]);
-                m_materialRect.setPosition({static_cast<float>(x) * matScale - 0.5F,
-                                            static_cast<float>(y) * matScale - 0.5F});
+                m_materialRect.setPosition({(static_cast<float>(x) * matScale) - 0.5F,
+                                            (static_cast<float>(y) * matScale) - 0.5F});
                 target.draw(m_materialRect, states);
             }
         }
     }
 
-    sf::CircleShape    m_outlineCircle;
-    sf::RectangleShape m_outlineRect;
+    sf::Sprite m_sprite;
 
     std::vector<sf::Color>     m_partColors;
     mutable sf::RectangleShape m_materialRect;

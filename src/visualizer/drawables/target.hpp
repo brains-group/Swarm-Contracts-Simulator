@@ -19,6 +19,7 @@ private:
     void draw(sf::RenderTarget& target, sf::RenderStates /* states */) const override {
         target.draw(m_corners);
     }
+
     sf::VertexArray m_corners;
 };
 
