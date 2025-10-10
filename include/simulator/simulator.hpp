@@ -3,6 +3,7 @@
 #include <agents/agent.hpp>
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
+#include <contracts/contract.hpp>
 
 namespace scs::sim {
 
@@ -39,7 +40,8 @@ private:
     // If we want this in the future, use a pointer
     config::SimulatorConfig& m_config;
 
-    std::vector<agents::Agent> m_agents;
+    std::vector<agents::Agent>       m_agents;
+    std::vector<contracts::Contract> m_contracts;
 };
 
 }    // namespace scs::sim
