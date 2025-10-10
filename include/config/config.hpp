@@ -21,6 +21,13 @@ public:
     DELETE_COPY_MOVE(Config);
 
     // Visualizer Config
+    [[nodiscard]] auto assetBasePath() const -> const std::filesystem::path& override {
+        return m_assetBasePath;
+    }
+    [[nodiscard]] auto agentTexturePath() const -> const std::filesystem::path& override {
+        return m_agentTexturePath;
+    }
+
     [[nodiscard]] auto windowWidth() const -> unsigned int override { return m_windowWidth; }
     [[nodiscard]] auto windowHeight() const -> unsigned int override { return m_windowHeight; }
     [[nodiscard]] auto windowName() const -> std::string override { return m_windowName; }
@@ -42,6 +49,9 @@ public:
 
 private:
     // Visualizer Config
+    const std::filesystem::path m_assetBasePath    = "assets";
+    const std::filesystem::path m_agentTexturePath = "textures/agent.png";
+
     const unsigned int m_windowWidth    = 1920;
     const unsigned int m_windowHeight   = 1080;
     const std::string  m_windowName     = "Swarm Contract Simulator Visualization";

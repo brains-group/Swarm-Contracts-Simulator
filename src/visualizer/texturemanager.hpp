@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <unordered_map>
+#include <utility>
 
 #include <SFML/Graphics.hpp>
 #include <common/logger.hpp>
@@ -10,8 +11,8 @@ namespace scs::vis {
 
 class AssetManager {
 public:
-    explicit AssetManager(std::string_view basePath)
-        : m_assetPath(basePath) {}
+    explicit AssetManager(std::filesystem::path basePath)
+        : m_assetPath(std::move(basePath)) {}
 
     auto getTexture(const std::filesystem::path& path) -> const sf::Texture& {
         std::filesystem::path fullPath = m_assetPath / path;

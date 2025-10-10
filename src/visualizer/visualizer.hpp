@@ -22,10 +22,10 @@ public:
         , m_simulator(config::Config::instance())
         , m_window(sf::VideoMode({m_config.windowWidth(), m_config.windowHeight()}),
                    m_config.windowName())
-        , m_assetManager("assets")
+        , m_assetManager(m_config.assetBasePath())
         , m_room(m_simulator.getRoomRocners())
         , m_target(m_simulator.getTargetCorners())
-        , m_agent(m_assetManager.getTexture("textures/agent.png")) {
+        , m_agent(m_assetManager.getTexture(m_config.agentTexturePath())) {
         m_window.setFramerateLimit(m_config.framerateLimit());
     }
     DELETE_COPY_MOVE(Visualizer);
