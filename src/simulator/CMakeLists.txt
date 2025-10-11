@@ -3,6 +3,7 @@ add_library(scs_simulator
 )
 
 target_link_libraries(scs_simulator
+    scs_agents
     scs_data
 )
 

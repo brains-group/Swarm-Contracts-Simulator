@@ -10,6 +10,7 @@ if(BUILD_TESTING)
     FetchContent_MakeAvailable(googletest)
 endif()
 
+add_subdirectory(agents)
 add_subdirectory(data)
 add_subdirectory(simulator)
 add_subdirectory(visualizer)
