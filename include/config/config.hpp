@@ -93,26 +93,26 @@ private:
          }},
     };
     const std::vector<agents::Agent> m_agents = {
-        agents::Agent(0, agents::Controller::create(agents::Controller::Type::Worker),
+        agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
                       agents::MakeTransform(data::Point(100, 100), data::Angle::Zero, 50),
                       agents::MakePart(std::vector<std::optional<data::Material>>(
                           {data::Material::Red, data::Material::Green, data::Material::Blue})),
                       agents::MakeBalance(100)),
         agents::Agent(
-            1, agents::Controller::create(agents::Controller::Type::Worker),
+            agents::Controller::create(agents::Controller::Type::Worker),
             agents::MakeTransform(data::Point(200, 200), data::degrees(30), 60),
             agents::MakePart(std::vector<std::optional<data::Material>>({data::Material::Green})),
             agents::MakeBalance(100)),
-        agents::Agent(2, agents::Controller::create(agents::Controller::Type::Worker),
+        agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
                       agents::MakeTransform(data::Point(300, 300), data::degrees(60), 70),
                       agents::MakePart(std::vector<std::optional<data::Material>>(
                           {data::Material::Blue, data::Material::Green, data::Material::Blue,
                            data::Material::Red, std::nullopt, data::Material::Red})),
                       agents::MakeBalance(100)),
-        agents::Agent(3, agents::Controller::create(agents::Controller::Type::Worker),
+        agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
                       agents::MakeTransform(data::Point(400, 400), data::degrees(90), 80), nullptr,
                       agents::MakeBalance(100)),
-        agents::Agent(4, agents::Controller::create(agents::Controller::Type::Client), nullptr,
+        agents::Agent(agents::Controller::create(agents::Controller::Type::Client), nullptr,
                       nullptr, agents::MakeBalance(100))};
 };
 

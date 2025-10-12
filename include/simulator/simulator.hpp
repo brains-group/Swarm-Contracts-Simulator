@@ -1,6 +1,7 @@
 #pragma once
 
 #include <agents/agent.hpp>
+#include <agents/siminterface.hpp>
 #include <config/config.hpp>
 #include <config/simulatorconfig.hpp>
 #include <contracts/contract.hpp>
@@ -11,7 +12,11 @@ class Simulator {
 public:
     explicit Simulator(config::SimulatorConfig& config = config::Config::instance())
         : m_config(config)
-        , m_agents(m_config.initialAgents()) {}
+        , m_agents(m_config.initialAgents()) {
+        for (agents::Agent& agent : m_agents) {
+            agent.setSimInterface(std::make_shared<agents::SimInterface>(*this, agent));
+        }
+    }
     DELETE_COPY_MOVE(Simulator);
     DEFAULT_DTOR(Simulator);
 
@@ -31,7 +36,7 @@ public:
 
     auto runFrame() -> void {
         for (agents::Agent& agent : m_agents) {
-            if (agent.hasController()) { agent.getController().run(); }
+            if (agent.hasController()) { agent.getController().run(agent.getSimInterface()); }
         }
     }
 

@@ -2,9 +2,9 @@
 
 #include <agents/controller.hpp>
 
-#define CONTROLLER_SUBCLASS(TYPE)                \
-    class TYPE##Controller : public Controller { \
-        auto run() -> void override;             \
+#define CONTROLLER_SUBCLASS(TYPE)                     \
+    class TYPE##Controller : public Controller {      \
+        auto run(SimInterface& sim) -> void override; \
     };
 
 namespace scs::agents {

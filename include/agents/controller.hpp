@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <memory>
 
+#include <agents/siminterface.hpp>
 #include <common/logger.hpp>
 #include <common/macros.hpp>
 
@@ -16,7 +17,7 @@
                                                                       \
         static auto create(Type type) -> std::shared_ptr<Controller>; \
                                                                       \
-        virtual auto run() -> void = 0;                               \
+        virtual auto run(SimInterface& simInterface) -> void = 0;     \
     };
 
 namespace scs::agents {
