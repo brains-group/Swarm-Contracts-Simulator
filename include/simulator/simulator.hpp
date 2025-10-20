@@ -46,7 +46,7 @@ public:
             if (agent.hasGoal()) {
                 data::Transform&           transform = agent.getTransform();
                 data::Point&               goal      = agent.getGoal();
-                std::optional<data::Angle> goalAngle = data::angle_to(transform.loc, goal);
+                std::optional<data::Angle> goalAngle = data::angle_to(transform.loc, goal, 1);
                 if (!goalAngle) {    // We are at the goal if we can't find an angle
                     agent.setGoal(nullptr);
                     continue;
