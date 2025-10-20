@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <common/logger.hpp>
 #include <common/macros.hpp>
 #include <config/config.hpp>
@@ -35,7 +36,7 @@ public:
         while (m_window.isOpen()) {
             m_simulator.runFrame();
 
-            m_window.clear();
+            m_window.clear(sf::Color(90, 90, 90));
 
             m_window.draw(m_room);
             m_window.draw(m_target);

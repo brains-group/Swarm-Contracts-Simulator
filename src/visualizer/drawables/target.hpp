@@ -8,10 +8,10 @@ namespace scs::vis::drawables {
 class Target : public sf::Drawable {
 public:
     explicit Target(const std::vector<data::Point>& corners)
-        : m_corners(sf::PrimitiveType::LineStrip, corners.size()) {
+        : m_corners(sf::PrimitiveType::TriangleFan, corners.size()) {
         for (unsigned int i = 0; i < corners.size(); i++) {
             m_corners[i].position = sf::Vector2f(corners[i].x, corners[i].y);
-            m_corners[i].color    = sf::Color::Green;
+            m_corners[i].color    = sf::Color(182, 215, 168);
         };
     }
 
