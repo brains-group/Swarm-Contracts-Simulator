@@ -8,8 +8,9 @@ namespace scs::contracts {
 
 class Contract {
 public:
-    explicit Contract(agents::Agent* client)
-        : m_client(client) {}
+    explicit Contract(agents::Agent* client, data::Part part)
+        : m_part(std::move(part))
+        , m_client(client) {}
 
     DELETE_COPY(Contract);
     DEFAULT_MOVE(Contract);
@@ -26,11 +27,17 @@ public:
     [[nodiscard]] auto getWorker() -> agents::Agent* { return m_worker; }
     [[nodiscard]] auto getWorker() const -> const agents::Agent* { return m_worker; }
 
+    // TODO: Don't make this public to user code (Expand ContractHandle?)
+    [[nodiscard]] auto isComplete() const -> bool { return m_complete; }
+    auto               markComplete() -> void { m_complete = true; }
+
 private:
     data::Part m_part;
 
     agents::Agent* m_client;
     agents::Agent* m_worker = nullptr;
+
+    bool m_complete = false;
 };
 
 }    // namespace scs::contracts

@@ -97,23 +97,23 @@ private:
                       agents::MakeTransform(data::Point(100, 100), data::Angle::Zero, 50),
                       agents::MakePart(std::vector<std::optional<data::Material>>(
                           {data::Material::Red, data::Material::Green, data::Material::Blue})),
-                      agents::MakeBalance(100)),
+                      agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
         agents::Agent(
             agents::Controller::create(agents::Controller::Type::Worker),
             agents::MakeTransform(data::Point(200, 200), data::degrees(30), 60),
             agents::MakePart(std::vector<std::optional<data::Material>>({data::Material::Green})),
-            agents::MakeBalance(100)),
+            agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
         agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
                       agents::MakeTransform(data::Point(300, 300), data::degrees(60), 70),
                       agents::MakePart(std::vector<std::optional<data::Material>>(
                           {data::Material::Blue, data::Material::Green, data::Material::Blue,
                            data::Material::Red, std::nullopt, data::Material::Red})),
-                      agents::MakeBalance(100)),
+                      agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
         agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
                       agents::MakeTransform(data::Point(400, 400), data::degrees(90), 80), nullptr,
-                      agents::MakeBalance(100)),
+                      agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
         agents::Agent(agents::Controller::create(agents::Controller::Type::Client), nullptr,
-                      nullptr, agents::MakeBalance(100))};
+                      nullptr, agents::MakeBalance(100), nullptr)};
 };
 
 }    // namespace scs::config

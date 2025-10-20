@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <memory>
 
-#include <agents/siminterface.hpp>
 #include <common/logger.hpp>
 #include <common/macros.hpp>
 
@@ -21,6 +20,8 @@
     };
 
 namespace scs::agents {
+
+class SimInterface;
 
 CONTROLLER_CLASS(CONTROLLER_TYPES);
 

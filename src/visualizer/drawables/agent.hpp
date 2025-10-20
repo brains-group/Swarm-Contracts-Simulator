@@ -20,7 +20,7 @@ public:
         auto size = texture.getSize();
         m_sprite.setScale({2.0F / size.x, 2.0F / size.y});
         m_sprite.setOrigin({size.x / 2.0F, size.y / 2.0F});
-        m_sprite.rotate(sf::degrees(-45));
+        m_sprite.rotate(sf::degrees(45));
     }
 
     void setPart(const data::Part& part) {

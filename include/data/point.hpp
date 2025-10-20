@@ -1,5 +1,9 @@
 #pragma once
 
+#include <optional>
+
+#include <data/angle.hpp>
+
 namespace scs::data {
 
 constexpr float DEFAULT_NORMALIZE_EPSILON  = 1e-12F;
@@ -37,5 +41,12 @@ auto lerp(const Point& a, const Point& b, float t) -> Point;
 
 // Floating point comparison helper (component-wise)
 auto almost_equal(const Point& a, const Point& b, float eps = DEFAULT_COMPARISON_EPSILON) -> bool;
+
+// Angle conversion
+auto angle_to(const Point& from, const Point& to, float eps = DEFAULT_NORMALIZE_EPSILON)
+    -> std::optional<Angle>;
+
+// Move `p` forward by `distance` along `heading`
+auto advance(const Point& p, Angle heading, float distance) -> Point;
 
 }    // namespace scs::data

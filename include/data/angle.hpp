@@ -1,5 +1,7 @@
 #pragma once
 
+#include <compare>
+
 #include <common/macros.hpp>
 
 namespace scs::data {
@@ -38,7 +40,10 @@ auto wrap_signed(Angle a) -> Angle;
 
 auto wrap_unsigned(Angle a) -> Angle;
 
-auto almost_equal(Angle a, Angle b, float eps = DEFAULT_ANGLE_COMPARISON_EPSILON) -> bool;
+auto        almost_equal(Angle a, Angle b, float eps = DEFAULT_ANGLE_COMPARISON_EPSILON) -> bool;
+inline auto operator<=>(Angle a, Angle b) -> std::partial_ordering {
+    return almost_equal(a, b) ? std::partial_ordering::equivalent : a.asRadians() <=> b.asRadians();
+}
 
 auto shortest_delta(Angle from, Angle to) -> Angle;
 

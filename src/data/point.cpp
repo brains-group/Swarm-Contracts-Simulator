@@ -41,4 +41,22 @@ auto lerp(const Point& a, const Point& b, float t) -> Point {
 auto almost_equal(const Point& a, const Point& b, float eps) -> bool {
     return std::fabs(a.x - b.x) <= eps && std::fabs(a.y - b.y) <= eps;
 }
+
+auto angle_to(const Point& from, const Point& to, float eps) -> std::optional<Angle> {
+    const float dx = to.x - from.x;
+    const float dy = to.y - from.y;
+
+    // If the direction is numerically ambiguous, treat as undefined.
+    if (std::abs(dx) <= eps && std::abs(dy) <= eps) { return std::nullopt; }
+    // atan2 is measured from +X, counterclockwise positive.
+    return radians(std::atan2(dy, dx));
+}
+
+auto advance(const Point& p, Angle heading, float distance) -> Point {
+    const float r  = heading.asRadians();
+    const float dx = std::cos(r) * distance;
+    const float dy = std::sin(r) * distance;
+    return {.x = p.x + dx, .y = p.y + dy};
+}
+
 }    // namespace scs::data

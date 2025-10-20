@@ -15,18 +15,15 @@
         return *m_##TYPE;                                                         \
     }
 
-#define ADD_COMPONENT(TYPE)                                                      \
-                                                                                 \
-public:                                                                          \
-    [[nodiscard]] auto has##TYPE() const -> bool { return m_##TYPE != nullptr; } \
-    auto               set##TYPE(std::shared_ptr<TYPE> TYPE##_) -> TYPE& {       \
-        m_##TYPE = std::move(TYPE##_);                             \
-        return get##TYPE();                                        \
-    }                                                                            \
-    ADD_COMPONENT_HELPER(TYPE)                                                   \
-    ADD_COMPONENT_HELPER(TYPE, const)                                            \
-                                                                                 \
-private:                                                                         \
+#define ADD_COMPONENT(TYPE)                                                                  \
+                                                                                             \
+public:                                                                                      \
+    [[nodiscard]] auto has##TYPE() const -> bool { return m_##TYPE != nullptr; }             \
+    auto set##TYPE(std::shared_ptr<TYPE> TYPE##_) -> void { m_##TYPE = std::move(TYPE##_); } \
+    ADD_COMPONENT_HELPER(TYPE)                                                               \
+    ADD_COMPONENT_HELPER(TYPE, const)                                                        \
+                                                                                             \
+private:                                                                                     \
     std::shared_ptr<TYPE> m_##TYPE;
 
 #define COMPONENT_VIEW_HELPER(TYPE, ...)                                         \
@@ -69,9 +66,11 @@ namespace scs::agents {
 using data::Part;
 using data::Transform;
 using Balance = uint64_t;
+// INTERNAL USE
+using Goal = data::Point;
 
 // NOLINTBEGIN
-AGENT_CLASS(SimInterface, Controller, Transform, Part, Balance)
+AGENT_CLASS(SimInterface, Controller, Transform, Part, Balance, Goal)
 // NOLINTEND
 
 }    // namespace scs::agents
