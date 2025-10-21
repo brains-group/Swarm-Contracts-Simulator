@@ -11,6 +11,9 @@
 #include "data/angle.hpp"
 #include "data/point.hpp"
 
+// FIXME: Revisit const correctness everywhere after changing to shared pointer vectors, everything
+// is wrong
+
 namespace scs::sim {
 
 class Simulator {
@@ -18,8 +21,8 @@ public:
     explicit Simulator(config::SimulatorConfig& config = config::Config::instance())
         : m_config(config)
         , m_agents(m_config.initialAgents()) {
-        for (agents::Agent& agent : m_agents) {
-            agent.setSimInterface(std::make_shared<agents::SimInterface>(*this, agent));
+        for (const std::shared_ptr<agents::Agent>& agent : m_agents) {
+            agent->setSimInterface(agents::MakeSimInterface(*this, agent));
         }
     }
     DELETE_COPY_MOVE(Simulator);
@@ -37,10 +40,13 @@ public:
         return m_config.materialStores();
     }
 
-    [[nodiscard]] auto getAgents() const -> const std::vector<agents::Agent>& { return m_agents; }
+    [[nodiscard]] auto getAgents() const -> const std::vector<std::shared_ptr<agents::Agent>>& {
+        return m_agents;
+    }
 
     auto runFrame() -> void {
-        for (agents::Agent& agent : m_agents) {
+        for (const std::shared_ptr<agents::Agent>& agentptr : m_agents) {
+            agents::Agent& agent = *agentptr;
             if (agent.hasController()) { agent.getController().run(agent.getSimInterface()); }
             // TODO: Make this avoid collisions and stuff
             if (agent.hasGoal()) {
@@ -60,12 +66,23 @@ public:
         }
     }
 
-    [[nodiscard]] auto getContracts() const -> const std::vector<contracts::Contract>& {
+    [[nodiscard]] auto getContracts() const
+        -> const std::vector<std::shared_ptr<contracts::Contract>>& {
         return m_contracts;
     }
 
-    auto createContract(agents::Agent& client, const data::Part& part) -> contracts::Contract& {
-        return m_contracts.emplace_back(&client, part);
+    [[nodiscard]] auto getContract(uint64_t id) -> std::shared_ptr<contracts::Contract> {
+        return m_contracts[id];
+    }
+    [[nodiscard]] auto getContract(uint64_t id) const
+        -> const std::shared_ptr<contracts::Contract>& {
+        return m_contracts[id];
+    }
+
+    auto createContract(std::shared_ptr<agents::Agent> client, const data::Part& part)
+        -> std::shared_ptr<contracts::Contract> {
+        return m_contracts.emplace_back(
+            std::make_shared<contracts::Contract>(m_contracts.size(), client, part));
     }
 
 private:
@@ -73,8 +90,10 @@ private:
     // If we want this in the future, use a pointer
     config::SimulatorConfig& m_config;
 
-    std::vector<agents::Agent>       m_agents;
-    std::vector<contracts::Contract> m_contracts;
+    // TODO: Shared pointers are gross here, this is a bandaid fix for pointer invalidatoin on
+    // realloc
+    std::vector<std::shared_ptr<agents::Agent>>       m_agents;
+    std::vector<std::shared_ptr<contracts::Contract>> m_contracts;
 };
 
 }    // namespace scs::sim

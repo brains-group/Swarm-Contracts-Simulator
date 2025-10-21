@@ -2,35 +2,64 @@
 
 #include <agents/agent.hpp>
 #include <agents/siminterface.hpp>
+#include <contracts/contract.hpp>
 #include <data/part.hpp>
+#include <data/point.hpp>
 #include <simulator/simulator.hpp>
-
-#include "contracts/contract.hpp"
 
 namespace scs::agents {
 
-SimInterface::SimInterface(sim::Simulator& sim, Agent& agent)
+SimInterface::SimInterface(sim::Simulator& sim, std::shared_ptr<Agent> agent)
     : m_sim(sim)
-    , m_agent(agent) {}
+    , m_agent(std::move(agent)) {}
 
-auto SimInterface::getContracts() const -> const std::vector<contracts::Contract>& {
+auto SimInterface::getTargetPoint() const -> const data::Point& {
+    return m_sim.getTargetCorners()[0];
+}
+
+auto SimInterface::getContracts() const
+    -> const std::vector<std::shared_ptr<contracts::Contract>>& {
     return m_sim.getContracts();
 }
 
-auto SimInterface::createContract(const data::Part& part) -> contracts::Contract& {
+auto SimInterface::getContract(uint64_t id) const -> std::shared_ptr<contracts::Contract> {
+    return m_sim.getContract(id);
+}
+
+auto SimInterface::createContract(const data::Part& part) const
+    -> std::shared_ptr<contracts::Contract> {
     return m_sim.createContract(m_agent, part);
 }
 
-auto SimInterface::acceptContract(contracts::Contract& contract) -> bool {
-    return contract.setWorker(&m_agent);
+auto SimInterface::acceptContract(uint64_t id) -> bool {
+    return m_sim.getContract(id)->setWorker(m_agent);
 }
 
-auto SimInterface::completeContract(contracts::Contract& contract) -> void {
-    contract.markComplete();
+auto SimInterface::canSendPart() const -> bool {
+    return m_agent->hasPart() && m_agent->hasTransform()
+        && data::distance(m_agent->getTransform().loc, getTargetPoint()) < 1;
 }
 
-auto SimInterface::setTarget(std::shared_ptr<data::Point> target) -> void {
-    m_agent.setGoal(std::move(target));
+auto SimInterface::sendPart() const -> bool {
+    if (!canSendPart()) { return false; }
+    for (const std::shared_ptr<contracts::Contract>& contract : getContracts()) {
+        if (contract->getWorker() == m_agent && contract->getPart() == m_agent->getPart()) {
+            contract->markComplete();
+            m_agent->setPart(nullptr);
+            return true;
+        }
+    }
+    return false;
 }
+
+auto SimInterface::setGoal(std::shared_ptr<data::Point> target) -> void {
+    m_agent->setGoal(std::move(target));
+}
+
+auto SimInterface::hasPart() const -> bool { return m_agent->hasPart(); }
+auto SimInterface::currentPart() const -> const agents::Part& { return m_agent->getPart(); }
+
+auto SimInterface::hasGoal() const -> bool { return m_agent->hasGoal(); }
+auto SimInterface::currentGoal() const -> const data::Point& { return m_agent->getGoal(); }
 
 }    // namespace scs::agents

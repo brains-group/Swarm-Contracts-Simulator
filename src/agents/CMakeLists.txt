@@ -3,6 +3,4 @@ add_library(scs_agents
     siminterface.cpp
 )
 
-target_link_libraries(scs_agents scs_controllers)
-
-add_subdirectory(controllers)
+target_link_libraries(scs_agents)

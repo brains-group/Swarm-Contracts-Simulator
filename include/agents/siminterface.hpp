@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstdint>
 #include <vector>
 
 #include <common/macros.hpp>
@@ -19,24 +19,37 @@ class Agent;
 
 class SimInterface {
 public:
-    SimInterface(sim::Simulator& sim, Agent& agent);
+    SimInterface(sim::Simulator& sim, std::shared_ptr<Agent> agent);
+
+    // SIM INFO
+    [[nodiscard]] auto getTargetPoint() const -> const data::Point&;
 
     // CONTRACTS
-    [[nodiscard]] auto getContracts() const -> const std::vector<contracts::Contract>&;
-    auto               createContract(const data::Part& part) -> contracts::Contract&;
-    auto               acceptContract(contracts::Contract& contract) -> bool;
-    auto               completeContract(contracts::Contract& contract) -> void;
+    [[nodiscard]] auto getContracts() const
+        -> const std::vector<std::shared_ptr<contracts::Contract>>&;
+    [[nodiscard]] auto getContract(uint64_t id) const -> std::shared_ptr<contracts::Contract>;
+    [[nodiscard]] auto createContract(const data::Part& part) const
+        -> std::shared_ptr<contracts::Contract>;
+    auto               acceptContract(uint64_t id) -> bool;
+    [[nodiscard]] auto canSendPart() const -> bool;
+    [[nodiscard]] auto sendPart() const -> bool;
 
     // MOVEMENT
-    auto setTarget(std::shared_ptr<data::Point> target) -> void;
+    auto setGoal(std::shared_ptr<data::Point> target) -> void;
+
+    // CURRENT STATE
+    [[nodiscard]] auto hasPart() const -> bool;
+    [[nodiscard]] auto currentPart() const -> const agents::Part&;
+    [[nodiscard]] auto hasGoal() const -> bool;
+    [[nodiscard]] auto currentGoal() const -> const data::Point&;
 
     DELETE_COPY(SimInterface);
     DELETE_MOVE(SimInterface);
     DEFAULT_DTOR(SimInterface);
 
 private:
-    sim::Simulator& m_sim;
-    Agent&          m_agent;
+    sim::Simulator&        m_sim;
+    std::shared_ptr<Agent> m_agent;
 };
 
 }    // namespace agents

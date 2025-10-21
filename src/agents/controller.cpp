@@ -1,6 +1,7 @@
 #include <agents/controller.hpp>
 
-#include "controllertypes.hpp"    // IWYU pragma: keep (used for macro CONTROLLER_TYPES below)
+#include "controllers/client.hpp"    // IWYU pragma: keep (used for macro CONTROLLER_TYPES below)
+#include "controllers/worker.hpp"    // IWYU pragma: keep (used for macro CONTROLLER_TYPES below)
 
 #define CONTROLLER_CASE(TYPE) \
     case Type::TYPE: return std::make_shared<TYPE##Controller>();

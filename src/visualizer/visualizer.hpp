@@ -47,7 +47,8 @@ public:
                 m_window.draw(m_materialStore);
             }
 
-            for (const agents::Agent& agent : m_simulator.getAgents()) {
+            for (const std::shared_ptr<agents::Agent>& agentptr : m_simulator.getAgents()) {
+                agents::Agent& agent = *agentptr;
                 if (!agent.hasTransform()) { continue; }
                 const data::Transform& trans = agent.getTransform();
 

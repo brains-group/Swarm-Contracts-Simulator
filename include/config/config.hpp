@@ -43,7 +43,8 @@ public:
     [[nodiscard]] auto materialStores() const -> const std::vector<data::MaterialStore>& override {
         return m_materialStores;
     }
-    [[nodiscard]] auto initialAgents() const -> const std::vector<agents::Agent>& override {
+    [[nodiscard]] auto initialAgents() const
+        -> const std::vector<std::shared_ptr<agents::Agent>>& override {
         return m_agents;
     };
 
@@ -92,28 +93,32 @@ private:
          .size = {.x = 100, .y = 100},
          }},
     };
-    const std::vector<agents::Agent> m_agents = {
-        agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
-                      agents::MakeTransform(data::Point(100, 100), data::Angle::Zero, 50),
-                      agents::MakePart(std::vector<std::optional<data::Material>>(
-                          {data::Material::Red, data::Material::Green, data::Material::Blue})),
-                      agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
-        agents::Agent(
+    const std::vector<std::shared_ptr<agents::Agent>> m_agents = {
+        std::make_shared<agents::Agent>(
             agents::Controller::create(agents::Controller::Type::Worker),
-            agents::MakeTransform(data::Point(200, 200), data::degrees(30), 60),
+            agents::MakeTransform(data::Point(100, 100), data::Angle::Zero, 40),
+            agents::MakePart(std::vector<std::optional<data::Material>>(
+                {data::Material::Red, data::Material::Green, data::Material::Blue})),
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(200, 200), data::degrees(30), 40),
             agents::MakePart(std::vector<std::optional<data::Material>>({data::Material::Green})),
-            agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
-        agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
-                      agents::MakeTransform(data::Point(300, 300), data::degrees(60), 70),
-                      agents::MakePart(std::vector<std::optional<data::Material>>(
-                          {data::Material::Blue, data::Material::Green, data::Material::Blue,
-                           data::Material::Red, std::nullopt, data::Material::Red})),
-                      agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
-        agents::Agent(agents::Controller::create(agents::Controller::Type::Worker),
-                      agents::MakeTransform(data::Point(400, 400), data::degrees(90), 80), nullptr,
-                      agents::MakeBalance(100), agents::MakeGoal(data::Point(200, 200))),
-        agents::Agent(agents::Controller::create(agents::Controller::Type::Client), nullptr,
-                      nullptr, agents::MakeBalance(100), nullptr)};
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(300, 300), data::degrees(60), 40),
+            agents::MakePart(std::vector<std::optional<data::Material>>(
+                {data::Material::Blue, data::Material::Green, data::Material::Blue,
+                 data::Material::Red, std::nullopt, data::Material::Red})),
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(400, 400), data::degrees(90), 40), nullptr,
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Client), nullptr, nullptr,
+            agents::MakeBalance(100), nullptr)};
 };
 
 }    // namespace scs::config

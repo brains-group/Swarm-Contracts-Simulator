@@ -14,6 +14,10 @@ struct Point {
     float y;
 };
 
+inline auto operator==(const Point& p1, const Point& p2) -> bool {
+    return p1.x == p2.x && p1.y == p2.y;
+}
+
 // Basic arithmetic
 auto operator+(const Point& a, const Point& b) -> Point;
 auto operator-(const Point& a, const Point& b) -> Point;

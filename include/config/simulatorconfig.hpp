@@ -15,8 +15,9 @@ public:
     [[nodiscard]] virtual auto roomCorners() const -> const std::vector<data::Point>&   = 0;
     [[nodiscard]] virtual auto targetCorners() const -> const std::vector<data::Point>& = 0;
     [[nodiscard]] virtual auto materialStores() const
-        -> const std::vector<data::MaterialStore>&                                      = 0;
-    [[nodiscard]] virtual auto initialAgents() const -> const std::vector<agents::Agent>& = 0;
+        -> const std::vector<data::MaterialStore>& = 0;
+    [[nodiscard]] virtual auto initialAgents() const
+        -> const std::vector<std::shared_ptr<agents::Agent>>& = 0;
 };
 
 }    // namespace scs::config

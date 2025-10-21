@@ -16,4 +16,8 @@ struct Material {
 
 auto mix(const Material& m1, const Material& m2) -> Material;
 
+inline auto operator==(const Material& m1, const Material& m2) {
+    return m1.r == m2.r && m1.g == m2.g && m1.b == m2.b;
+}
+
 }    // namespace scs::data
