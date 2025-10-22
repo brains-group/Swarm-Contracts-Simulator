@@ -58,8 +58,8 @@ public:
                     continue;
                 }
                 data::Angle steer = data::shortest_delta(transform.rot, goalAngle.value());
-                if (steer > data::degrees(1)) { steer = data::degrees(1); }
-                if (steer < data::degrees(1)) { steer = data::degrees(-1); }
+                if (steer > data::degrees(3)) { steer = data::degrees(3); }
+                if (steer < data::degrees(3)) { steer = data::degrees(-3); }
                 transform.rot = transform.rot + steer;
                 transform.loc = data::advance(transform.loc, transform.rot, 1);
             }

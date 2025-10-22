@@ -7,6 +7,8 @@
 #include <data/point.hpp>
 #include <simulator/simulator.hpp>
 
+#include "data/material.hpp"
+
 namespace scs::agents {
 
 SimInterface::SimInterface(sim::Simulator& sim, std::shared_ptr<Agent> agent)
@@ -15,6 +17,13 @@ SimInterface::SimInterface(sim::Simulator& sim, std::shared_ptr<Agent> agent)
 
 auto SimInterface::getTargetPoint() const -> const data::Point& {
     return m_sim.getTargetCorners()[0];
+}
+
+auto SimInterface::getMaterialPoint(const data::Material& mat) const -> std::optional<data::Point> {
+    for (const auto& store : m_sim.getMaterialStores()) {
+        if (store.material == mat) { return store.space.loc; }
+    }
+    return std::nullopt;
 }
 
 auto SimInterface::getContracts() const
@@ -37,13 +46,14 @@ auto SimInterface::acceptContract(uint64_t id) -> bool {
 
 auto SimInterface::canSendPart() const -> bool {
     return m_agent->hasPart() && m_agent->hasTransform()
-        && data::distance(m_agent->getTransform().loc, getTargetPoint()) < 1;
+        && data::distance(m_agent->getTransform().loc, getTargetPoint()) < 5;
 }
 
 auto SimInterface::sendPart() const -> bool {
     if (!canSendPart()) { return false; }
     for (const std::shared_ptr<contracts::Contract>& contract : getContracts()) {
-        if (contract->getWorker() == m_agent && contract->getPart() == m_agent->getPart()) {
+        if (!contract->isComplete() && contract->getWorker() == m_agent
+            && contract->getPart() == m_agent->getPart()) {
             contract->markComplete();
             m_agent->setPart(nullptr);
             return true;
@@ -56,8 +66,23 @@ auto SimInterface::setGoal(std::shared_ptr<data::Point> target) -> void {
     m_agent->setGoal(std::move(target));
 }
 
+auto SimInterface::hasLoc() const -> bool { return m_agent->hasTransform(); }
+auto SimInterface::getLoc() const -> const data::Point& { return m_agent->getTransform().loc; }
+
 auto SimInterface::hasPart() const -> bool { return m_agent->hasPart(); }
 auto SimInterface::currentPart() const -> const agents::Part& { return m_agent->getPart(); }
+
+auto SimInterface::canGetMaterial(const data::Material& mat) const -> bool {
+    std::optional<data::Point> matLoc = getMaterialPoint(mat);
+
+    return matLoc && hasLoc() && !hasPart() && data::distance(*matLoc, getLoc()) < 5;
+}
+auto SimInterface::getMaterial(const data::Material& mat) const -> bool {
+    if (!canGetMaterial(mat)) { return false; }
+
+    m_agent->setPart(agents::MakePart(data::Part({data::Material(mat)})));
+    return true;
+}
 
 auto SimInterface::hasGoal() const -> bool { return m_agent->hasGoal(); }
 auto SimInterface::currentGoal() const -> const data::Point& { return m_agent->getGoal(); }

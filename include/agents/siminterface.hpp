@@ -7,6 +7,8 @@
 #include <data/part.hpp>
 #include <simulator/handle.hpp>
 
+#include "data/material.hpp"
+
 namespace scs {
 
 namespace sim {
@@ -23,6 +25,8 @@ public:
 
     // SIM INFO
     [[nodiscard]] auto getTargetPoint() const -> const data::Point&;
+    [[nodiscard]] auto getMaterialPoint(const data::Material& mat) const
+        -> std::optional<data::Point>;
 
     // CONTRACTS
     [[nodiscard]] auto getContracts() const
@@ -38,8 +42,15 @@ public:
     auto setGoal(std::shared_ptr<data::Point> target) -> void;
 
     // CURRENT STATE
+    [[nodiscard]] auto hasLoc() const -> bool;
+    [[nodiscard]] auto getLoc() const -> const data::Point&;
+
     [[nodiscard]] auto hasPart() const -> bool;
     [[nodiscard]] auto currentPart() const -> const agents::Part&;
+
+    [[nodiscard]] auto canGetMaterial(const data::Material& mat) const -> bool;
+    [[nodiscard]] auto getMaterial(const data::Material& mat) const -> bool;
+
     [[nodiscard]] auto hasGoal() const -> bool;
     [[nodiscard]] auto currentGoal() const -> const data::Point&;
 
