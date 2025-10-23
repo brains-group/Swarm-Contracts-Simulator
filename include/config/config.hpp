@@ -37,6 +37,10 @@ public:
     [[nodiscard]] auto windowName() const -> std::string override { return m_windowName; }
     [[nodiscard]] auto framerateLimit() const -> unsigned int override { return m_framerateLimit; }
 
+    [[nodiscard]] auto getOrderQueueArea() const -> const data::Rect& override {
+        return m_orderQueueArea;
+    }
+
     // Simulator Config
     [[nodiscard]] auto roomCorners() const -> const std::vector<data::Point>& override {
         return m_roomCorners;
@@ -61,10 +65,15 @@ private:
     const std::filesystem::path m_agentTexturePath   = "textures/agent.png";
     const std::filesystem::path m_stationTexturePath = "textures/station.png";
 
-    const unsigned int m_windowWidth    = 1600;
+    const unsigned int m_windowWidth    = 1800;
     const unsigned int m_windowHeight   = 900;
     const std::string  m_windowName     = "Swarm Contract Simulator Visualization";
     const unsigned int m_framerateLimit = 144;
+
+    const data::Rect m_orderQueueArea = {
+        .loc  = {.x = 1570,  .y = 50},
+        .size = { .x = 180, .y = 800},
+    };
 
     // Simulator Config
     const std::vector<data::Point> m_roomCorners = {

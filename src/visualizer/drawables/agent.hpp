@@ -38,7 +38,7 @@ public:
             const std::optional<data::Material>& mat = part[i];
             m_partColors[i] = mat ? sf::Color(mat->r, mat->g, mat->b) : sf::Color::Transparent;
         }
-    };
+    }
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override {

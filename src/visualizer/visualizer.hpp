@@ -10,6 +10,7 @@
 
 #include "drawables/agent.hpp"
 #include "drawables/materialstore.hpp"
+#include "drawables/orderqueue.hpp"
 #include "drawables/room.hpp"
 #include "drawables/station.hpp"
 #include "drawables/target.hpp"
@@ -27,6 +28,7 @@ public:
         , m_assetManager(m_config.assetBasePath())
         , m_room(m_simulator.getRoomRocners())
         , m_target(m_simulator.getTargetCorners())
+        , m_orderQueue(m_config.getOrderQueueArea(), m_simulator.getContracts())
         , m_agent(m_assetManager.getTexture(m_config.agentTexturePath()))
         , m_station(m_assetManager.getTexture(m_config.stationTexturePath())) {
         m_window.setFramerateLimit(m_config.framerateLimit());
@@ -42,6 +44,9 @@ public:
 
             m_window.draw(m_room);
             m_window.draw(m_target);
+
+            m_window.draw(m_orderQueue);
+
             for (const data::MaterialStore& mat : m_simulator.getMaterialStores()) {
                 m_materialStore.setPosition({mat.space.loc.x, mat.space.loc.y});
                 m_materialStore.setScale({mat.space.size.x, mat.space.size.y});
@@ -93,6 +98,7 @@ private:
 
     drawables::Room          m_room;
     drawables::Target        m_target;
+    drawables::OrderQueue    m_orderQueue;
     drawables::MaterialStore m_materialStore;
     drawables::Agent         m_agent;
     drawables::Station       m_station;

@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include <common/macros.hpp>
+#include <data/rect.hpp>
 
 namespace scs::config {
 
@@ -18,6 +19,8 @@ public:
     [[nodiscard]] virtual auto windowHeight() const -> unsigned int   = 0;
     [[nodiscard]] virtual auto windowName() const -> std::string      = 0;
     [[nodiscard]] virtual auto framerateLimit() const -> unsigned int = 0;
+
+    [[nodiscard]] virtual auto getOrderQueueArea() const -> const data::Rect& = 0;
 };
 
 }    // namespace scs::config
