@@ -20,8 +20,9 @@ struct Material {
     static const Material Yellow;
     static const Material Magenta;
 
-    // WHITE
+    // WHITE & BLACK
     static const Material White;
+    static const Material Black;
 };
 
 auto mix(const Material& m1, const Material& m2) -> Material;

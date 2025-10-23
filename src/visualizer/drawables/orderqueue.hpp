@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <contracts/contract.hpp>
 #include <data/rect.hpp>
 
@@ -14,9 +15,13 @@ public:
                         const std::vector<std::shared_ptr<contracts::Contract>>& contracts)
         : m_outlineRect({area.size.x, area.size.y})
         , m_contracts(contracts)
-        , m_materialRect({1, 1}) {
+        , m_materialRect({1, 1})
+        , m_completedCover({1.2, 1.2}) {
         m_outlineRect.setPosition({area.loc.x, area.loc.y});
         m_outlineRect.setFillColor({243, 243, 243});
+        m_completedCover.setOrigin({0.1, 0.1});
+        m_completedCover.setScale({50.0f, 50.0f});
+        m_completedCover.setFillColor({0, 255, 0, 100});
     }
     DELETE_COPY_MOVE(OrderQueue);
     DEFAULT_DTOR(OrderQueue);
@@ -26,9 +31,8 @@ private:
         target.draw(m_outlineRect);
 
         unsigned int position = 0;
-        for (const std::shared_ptr<contracts::Contract>& contract : m_contracts) {
-            if (contract->isComplete()) { continue; }
-
+        for (const std::shared_ptr<contracts::Contract>& contract :
+             m_contracts | std::views::reverse | std::views::take(10)) {
             setPart(contract->getPart());
 
             // Draw the part
@@ -42,14 +46,18 @@ private:
                     m_materialRect.setFillColor(m_partColors[index]);
                     m_materialRect.setPosition(
                         m_outlineRect.getPosition()
-                        + sf::Vector2((static_cast<float>(x) * matScale)
-                                          + (m_outlineRect.getSize().x - 50.0F) / 2,
-                                      50 + 100 * position + (static_cast<float>(y) * matScale)));
-
-                    LOG(INFO) << "Drawing at " << m_materialRect.getPosition().x << ", "
-                              << m_materialRect.getPosition().y;
+                        + sf::Vector2f((static_cast<float>(x) * matScale)
+                                           + (m_outlineRect.getSize().x - 50.0F) / 2,
+                                       50 + 75 * position + (static_cast<float>(y) * matScale)));
                     target.draw(m_materialRect);
                 }
+            }
+
+            if (contract->isComplete()) {
+                m_completedCover.setPosition(
+                    m_outlineRect.getPosition()
+                    + sf::Vector2f((m_outlineRect.getSize().x - 50.0F) / 2, 50 + 75 * position));
+                target.draw(m_completedCover);
             }
 
             position++;
@@ -80,6 +88,8 @@ private:
 
     mutable std::vector<sf::Color> m_partColors;
     mutable sf::RectangleShape     m_materialRect;
+
+    mutable sf::RectangleShape m_completedCover;
 };
 
 }    // namespace scs::vis::drawables

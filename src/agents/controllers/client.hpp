@@ -1,38 +1,47 @@
 #pragma once
 
+#include <random>
+
 #include <agents/controller.hpp>
 #include <agents/siminterface.hpp>
-
-#include "data/material.hpp"
+#include <data/material.hpp>
 
 namespace scs::agents {
 
 class ClientController : public Controller {
 public:
     auto run(SimInterface& sim) -> void override {
-        // We want to maintain 5 uncompleted contracts at all times
         int num = std::ranges::count_if(
             sim.getContracts(), [](const auto& contract) { return !contract->isComplete(); });
 
         while (num++ < 5) {
-            auto contractPtr = sim.createContract(nextOrder(sim));
+            auto contractPtr = sim.createContract(nextOrder());
             LOG(INFO) << "Created contract " << contractPtr->getID();
         }
     }
 
-    auto nextOrder(SimInterface& sim) -> data::Part {
-        switch (sim.getContracts().size() % 4) {
-            case 0:
-                return {data::Material::Red, data::Material::Blue, data::Material::Green,
-                        data::Material::Yellow};
-            case 1: return {data::Material::Green, data::Material::Blue, data::Material::Magenta};
-            case 2: return {data::Material::Yellow};
-            case 3: return {data::Material::Cyan, data::Material::Red};
+    auto nextOrder() -> data::Part {
+        data::Part part = {};
+        // Randomly choose order size
+        std::uniform_int_distribution<unsigned int> sizeDist(1, 6);
+        unsigned int                                size = sizeDist(m_randomGen);
+
+        // Randomly choose a color for each index
+        std::bernoulli_distribution colorDist(.333);
+        while (part.size() < size) {
+            data::Material mat(colorDist(m_randomGen) ? 255 : 0, colorDist(m_randomGen) ? 255 : 0,
+                               colorDist(m_randomGen) ? 255 : 0);
+            // Black is an invalid color
+            if (mat != data::Material::Black && mat != data::Material::White) {
+                part.emplace_back(mat);
+            }
         }
-        std::unreachable();
+        return part;
     }
 
 private:
+    std::random_device m_rd;
+    std::mt19937       m_randomGen;
 };
 
 }    // namespace scs::agents

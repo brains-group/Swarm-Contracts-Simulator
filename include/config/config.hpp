@@ -68,7 +68,7 @@ private:
     const unsigned int m_windowWidth    = 1800;
     const unsigned int m_windowHeight   = 900;
     const std::string  m_windowName     = "Swarm Contract Simulator Visualization";
-    const unsigned int m_framerateLimit = 144;
+    const unsigned int m_framerateLimit = 250;
 
     const data::Rect m_orderQueueArea = {
         .loc  = {.x = 1570,  .y = 50},
