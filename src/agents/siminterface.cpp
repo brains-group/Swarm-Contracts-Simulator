@@ -1,3 +1,4 @@
+#include <cfloat>
 #include <utility>
 
 #include <agents/agent.hpp>
@@ -8,6 +9,7 @@
 #include <simulator/simulator.hpp>
 
 #include "data/material.hpp"
+#include "data/station.hpp"
 
 namespace scs::agents {
 
@@ -28,6 +30,22 @@ auto SimInterface::getMaterialPoint(const data::Material& mat) const -> std::opt
         }
     }
     return std::nullopt;
+}
+
+auto SimInterface::getStationPoint(data::Station::Type stationType) const
+    -> std::optional<data::Point> {
+    std::optional<data::Point> best     = std::nullopt;
+    float                      bestDist = FLT_MAX;
+    const data::Point&         loc      = getLoc();
+    for (const auto& station : m_sim.getStations()) {
+        if (station.type != stationType) { continue; }
+        float dist = data::distance(loc, station.loc);
+        if (dist < bestDist) {
+            best     = station.loc;
+            bestDist = dist;
+        }
+    }
+    return best;
 }
 
 auto SimInterface::getContracts() const
@@ -64,6 +82,46 @@ auto SimInterface::sendPart() const -> bool {
         }
     }
     return false;
+}
+
+auto SimInterface::canStashPart(data::Station::Type stationType) const -> bool {
+    auto stationPoint = getStationPoint(stationType);
+    return stationPoint && hasPart() && data::distance(getLoc(), *stationPoint) < 55
+        && (stationType != data::Station::MIX || m_agent->getPart().size() == 1);
+}
+
+auto SimInterface::stashPart(data::Station::Type stationType) -> bool {
+    if (!canStashPart(stationType)) { return false; }
+    switch (stationType) {
+        case data::Station::ADD:
+            m_addStashed.insert(m_addStashed.end(), m_agent->getPart().begin(),
+                                m_agent->getPart().end());
+        case data::Station::MIX:
+            m_mixStashed =
+                m_mixStashed ? mix(*m_mixStashed, *m_agent->getPart()[0]) : *m_agent->getPart()[0];
+            break;
+    }
+    m_agent->setPart(nullptr);
+    return true;
+}
+
+auto SimInterface::canCollectStash(data::Station::Type stationType) const -> bool {
+    auto stationPoint = getStationPoint(stationType);
+    return stationPoint && !hasPart() && data::distance(getLoc(), *stationPoint) < 55;
+}
+
+auto SimInterface::collectStash(data::Station::Type stationType) -> bool {
+    if (!canCollectStash(stationType)) { return false; }
+    switch (stationType) {
+        case data::Station::ADD:
+            m_agent->setPart(agents::MakePart(std::move(m_addStashed)));
+            m_addStashed = {};
+            break;
+        case data::Station::MIX:
+            m_agent->setPart(agents::MakePart(data::Part({m_mixStashed})));
+            m_mixStashed = std::nullopt;
+    }
+    return true;
 }
 
 auto SimInterface::setGoal(std::shared_ptr<data::Point> target) -> void {

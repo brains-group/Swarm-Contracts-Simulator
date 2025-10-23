@@ -13,7 +13,8 @@ public:
         // Create a new contract when the posted one is completed
         if (m_contractID == UINT64_MAX) {
             m_contractID = sim.createContract(nextOrder(sim))->getID();
-            LOG(INFO) << "Created contract " << m_contractID;
+            LOG(INFO) << "Created contract " << m_contractID << " ("
+                      << sim.getContract(m_contractID)->getPart().size() << ")";
         }
 
         // Reset current contract if completed
@@ -22,7 +23,7 @@ public:
 
     auto nextOrder(SimInterface& sim) -> data::Part {
         switch (sim.getContracts().size() % 3) {
-            case 0: return {data::Material::Red};
+            case 0: return {data::Material::Red, data::Material::Blue};
             case 1: return {data::Material::Green};
             case 2: return {data::Material::Blue};
         }

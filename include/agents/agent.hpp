@@ -22,6 +22,7 @@ public:                                                                         
     auto set##TYPE(std::shared_ptr<TYPE> TYPE##_) -> void { m_##TYPE = std::move(TYPE##_); } \
     ADD_COMPONENT_HELPER(TYPE)                                                               \
     ADD_COMPONENT_HELPER(TYPE, const)                                                        \
+    auto get##TYPE##Ptr() -> std::shared_ptr<TYPE> { return m_##TYPE; }                      \
                                                                                              \
 private:                                                                                     \
     std::shared_ptr<TYPE> m_##TYPE;
