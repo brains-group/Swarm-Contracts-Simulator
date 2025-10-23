@@ -21,10 +21,13 @@ public:
     }
 
     auto nextOrder(SimInterface& sim) -> data::Part {
-        switch (sim.getContracts().size() % 3) {
-            case 0: return {data::Material::Red, data::Material::Blue, data::Material::Green};
-            case 1: return {data::Material::Green, data::Material::Red};
-            case 2: return {data::Material::Blue};
+        switch (sim.getContracts().size() % 4) {
+            case 0:
+                return {data::Material::Red, data::Material::Blue, data::Material::Green,
+                        data::Material::Yellow};
+            case 1: return {data::Material::Green, data::Material::Blue, data::Material::Magenta};
+            case 2: return {data::Material::Yellow};
+            case 3: return {data::Material::Cyan, data::Material::Red};
         }
         std::unreachable();
     }

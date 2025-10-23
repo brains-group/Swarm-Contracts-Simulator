@@ -96,9 +96,17 @@ auto SimInterface::stashPart(data::Station::Type stationType) -> bool {
         case data::Station::ADD:
             m_addStashed.insert(m_addStashed.end(), m_agent->getPart().begin(),
                                 m_agent->getPart().end());
+            break;
         case data::Station::MIX:
+            LOG(INFO) << "Stashing " << *m_agent->getPart()[0];
+            if (!m_mixStashed) {
+                LOG(INFO) << "No previous mix stash";
+            } else {
+                LOG(INFO) << "Previous: " << *m_mixStashed;
+            }
             m_mixStashed =
                 m_mixStashed ? mix(*m_mixStashed, *m_agent->getPart()[0]) : *m_agent->getPart()[0];
+            LOG(INFO) << "After: " << *m_mixStashed;
             break;
     }
     m_agent->setPart(nullptr);
@@ -119,7 +127,9 @@ auto SimInterface::collectStash(data::Station::Type stationType) -> bool {
             break;
         case data::Station::MIX:
             m_agent->setPart(agents::MakePart(data::Part({m_mixStashed})));
+            LOG(INFO) << "Collected mixed part: " << *m_mixStashed;
             m_mixStashed = std::nullopt;
+            break;
     }
     return true;
 }
