@@ -1,3 +1,4 @@
+#include <cfloat>
 #include <cmath>
 
 #include <data/point.hpp>
@@ -57,6 +58,10 @@ auto advance(const Point& p, Angle heading, float distance) -> Point {
     const float dx = std::cos(r) * distance;
     const float dy = std::sin(r) * distance;
     return {.x = p.x + dx, .y = p.y + dy};
+}
+
+auto closest(const Point& p, const std::vector<Point>& points) -> Point {
+    return std::ranges::min(points, {}, [&p](const Point& pv) { return distance(p, pv); });
 }
 
 }    // namespace scs::data

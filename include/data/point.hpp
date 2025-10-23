@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <vector>
 
 #include <data/angle.hpp>
 
@@ -52,5 +53,7 @@ auto angle_to(const Point& from, const Point& to, float eps = DEFAULT_NORMALIZE_
 
 // Move `p` forward by `distance` along `heading`
 auto advance(const Point& p, Angle heading, float distance) -> Point;
+
+auto closest(const Point& p, const std::vector<Point>& points) -> Point;
 
 }    // namespace scs::data

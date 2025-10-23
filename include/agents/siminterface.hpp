@@ -24,7 +24,7 @@ public:
     SimInterface(sim::Simulator& sim, std::shared_ptr<Agent> agent);
 
     // SIM INFO
-    [[nodiscard]] auto getTargetPoint() const -> const data::Point&;
+    [[nodiscard]] auto getTargetPoint() const -> data::Point;
     [[nodiscard]] auto getMaterialPoint(const data::Material& mat) const
         -> std::optional<data::Point>;
 

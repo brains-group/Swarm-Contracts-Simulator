@@ -15,13 +15,17 @@ SimInterface::SimInterface(sim::Simulator& sim, std::shared_ptr<Agent> agent)
     : m_sim(sim)
     , m_agent(std::move(agent)) {}
 
-auto SimInterface::getTargetPoint() const -> const data::Point& {
-    return m_sim.getTargetCorners()[0];
+auto SimInterface::getTargetPoint() const -> data::Point {
+    return hasLoc() ? data::closest(getLoc(), m_sim.getTargetCorners())
+                    : m_sim.getTargetCorners()[0];
 }
 
 auto SimInterface::getMaterialPoint(const data::Material& mat) const -> std::optional<data::Point> {
     for (const auto& store : m_sim.getMaterialStores()) {
-        if (store.material == mat) { return store.space.loc; }
+        if (store.material == mat) {
+            return hasLoc() ? data::closest(getLoc(), data::getPoints(store.space))
+                            : store.space.loc;
+        }
     }
     return std::nullopt;
 }
