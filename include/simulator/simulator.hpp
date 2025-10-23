@@ -10,6 +10,7 @@
 
 #include "data/angle.hpp"
 #include "data/point.hpp"
+#include "data/station.hpp"
 
 // FIXME: Revisit const correctness everywhere after changing to shared pointer vectors, everything
 // is wrong
@@ -34,6 +35,10 @@ public:
 
     [[nodiscard]] auto getTargetCorners() const -> const std::vector<data::Point>& {
         return m_config.targetCorners();
+    }
+
+    [[nodiscard]] auto getStations() const -> const std::vector<data::Station>& {
+        return m_config.stations();
     }
 
     [[nodiscard]] auto getMaterialStores() const -> const std::vector<data::MaterialStore>& {

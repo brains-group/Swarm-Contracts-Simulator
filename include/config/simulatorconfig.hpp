@@ -5,6 +5,7 @@
 #include <agents/agent.hpp>
 #include <common/macros.hpp>
 #include <data/materialstore.hpp>
+#include <data/station.hpp>
 
 namespace scs::config {
 
@@ -14,6 +15,7 @@ public:
 
     [[nodiscard]] virtual auto roomCorners() const -> const std::vector<data::Point>&   = 0;
     [[nodiscard]] virtual auto targetCorners() const -> const std::vector<data::Point>& = 0;
+    [[nodiscard]] virtual auto stations() const -> const std::vector<data::Station>&    = 0;
     [[nodiscard]] virtual auto materialStores() const
         -> const std::vector<data::MaterialStore>& = 0;
     [[nodiscard]] virtual auto initialAgents() const

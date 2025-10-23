@@ -7,6 +7,7 @@
 #include <config/simulatorconfig.hpp>
 #include <config/visualizerconfig.hpp>
 #include <data/material.hpp>
+#include <data/station.hpp>
 
 namespace scs::config {
 
@@ -27,6 +28,9 @@ public:
     [[nodiscard]] auto agentTexturePath() const -> const std::filesystem::path& override {
         return m_agentTexturePath;
     }
+    [[nodiscard]] auto stationTexturePath() const -> const std::filesystem::path& override {
+        return m_stationTexturePath;
+    }
 
     [[nodiscard]] auto windowWidth() const -> unsigned int override { return m_windowWidth; }
     [[nodiscard]] auto windowHeight() const -> unsigned int override { return m_windowHeight; }
@@ -40,6 +44,9 @@ public:
     [[nodiscard]] auto targetCorners() const -> const std::vector<data::Point>& override {
         return m_targetCorners;
     }
+    [[nodiscard]] auto stations() const -> const std::vector<data::Station>& override {
+        return m_stations;
+    }
     [[nodiscard]] auto materialStores() const -> const std::vector<data::MaterialStore>& override {
         return m_materialStores;
     }
@@ -50,8 +57,9 @@ public:
 
 private:
     // Visualizer Config
-    const std::filesystem::path m_assetBasePath    = "assets";
-    const std::filesystem::path m_agentTexturePath = "textures/agent.png";
+    const std::filesystem::path m_assetBasePath      = "assets";
+    const std::filesystem::path m_agentTexturePath   = "textures/agent.png";
+    const std::filesystem::path m_stationTexturePath = "textures/station.png";
 
     const unsigned int m_windowWidth    = 1920;
     const unsigned int m_windowHeight   = 1080;
@@ -92,6 +100,9 @@ private:
          .loc  = {.x = 100, .y = 800},
          .size = {.x = 100, .y = 100},
          }},
+    };
+    const std::vector<data::Station> m_stations = {
+        {.loc = {.x = 500, .y = 500}, .size = 50, .type = data::Station::Type::ADD}
     };
     const std::vector<std::shared_ptr<agents::Agent>> m_agents = {
         std::make_shared<agents::Agent>(

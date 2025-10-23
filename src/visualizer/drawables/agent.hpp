@@ -3,8 +3,6 @@
 #include <cmath>
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 #include <common/logger.hpp>
 #include <data/part.hpp>
 

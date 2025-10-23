@@ -11,6 +11,7 @@
 #include "drawables/agent.hpp"
 #include "drawables/materialstore.hpp"
 #include "drawables/room.hpp"
+#include "drawables/station.hpp"
 #include "drawables/target.hpp"
 #include "texturemanager.hpp"
 
@@ -26,7 +27,8 @@ public:
         , m_assetManager(m_config.assetBasePath())
         , m_room(m_simulator.getRoomRocners())
         , m_target(m_simulator.getTargetCorners())
-        , m_agent(m_assetManager.getTexture(m_config.agentTexturePath())) {
+        , m_agent(m_assetManager.getTexture(m_config.agentTexturePath()))
+        , m_station(m_assetManager.getTexture(m_config.stationTexturePath())) {
         m_window.setFramerateLimit(m_config.framerateLimit());
     }
     DELETE_COPY_MOVE(Visualizer);
@@ -45,6 +47,13 @@ public:
                 m_materialStore.setScale({mat.space.size.x, mat.space.size.y});
                 m_materialStore.setColor({mat.material.r, mat.material.g, mat.material.b});
                 m_window.draw(m_materialStore);
+            }
+
+            for (const data::Station& station : m_simulator.getStations()) {
+                m_station.setPosition({station.loc.x, station.loc.y});
+                m_station.setScale({station.size, station.size});
+                m_station.setType(station.type);
+                m_window.draw(m_station);
             }
 
             for (const std::shared_ptr<agents::Agent>& agentptr : m_simulator.getAgents()) {
@@ -86,6 +95,7 @@ private:
     drawables::Target        m_target;
     drawables::MaterialStore m_materialStore;
     drawables::Agent         m_agent;
+    drawables::Station       m_station;
 };
 
 }    // namespace scs::vis
