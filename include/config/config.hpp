@@ -64,7 +64,7 @@ private:
     const unsigned int m_windowWidth    = 1600;
     const unsigned int m_windowHeight   = 900;
     const std::string  m_windowName     = "Swarm Contract Simulator Visualization";
-    const unsigned int m_framerateLimit = 300;
+    const unsigned int m_framerateLimit = 144;
 
     // Simulator Config
     const std::vector<data::Point> m_roomCorners = {
