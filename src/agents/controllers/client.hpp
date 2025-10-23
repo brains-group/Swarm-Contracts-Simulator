@@ -10,28 +10,26 @@ namespace scs::agents {
 class ClientController : public Controller {
 public:
     auto run(SimInterface& sim) -> void override {
-        // Create a new contract when the posted one is completed
-        if (m_contractID == UINT64_MAX) {
-            m_contractID = sim.createContract(nextOrder(sim))->getID();
-            LOG(INFO) << "Created contract " << m_contractID << " ("
-                      << sim.getContract(m_contractID)->getPart().size() << ")";
-        }
+        // We want to maintain 5 uncompleted contracts at all times
+        int num = std::ranges::count_if(
+            sim.getContracts(), [](const auto& contract) { return !contract->isComplete(); });
 
-        // Reset current contract if completed
-        if (sim.getContract(m_contractID)->isComplete()) { m_contractID = UINT64_MAX; }
+        while (num++ < 5) {
+            auto contractPtr = sim.createContract(nextOrder(sim));
+            LOG(INFO) << "Created contract " << contractPtr->getID();
+        }
     }
 
     auto nextOrder(SimInterface& sim) -> data::Part {
         switch (sim.getContracts().size() % 3) {
-            case 0: return {data::Material::Red, data::Material::Blue};
-            case 1: return {data::Material::Green};
+            case 0: return {data::Material::Red, data::Material::Blue, data::Material::Green};
+            case 1: return {data::Material::Green, data::Material::Red};
             case 2: return {data::Material::Blue};
         }
         std::unreachable();
     }
 
 private:
-    uint64_t m_contractID = UINT64_MAX;
 };
 
 }    // namespace scs::agents

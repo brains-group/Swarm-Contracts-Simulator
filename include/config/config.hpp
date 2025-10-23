@@ -61,53 +61,70 @@ private:
     const std::filesystem::path m_agentTexturePath   = "textures/agent.png";
     const std::filesystem::path m_stationTexturePath = "textures/station.png";
 
-    const unsigned int m_windowWidth    = 1920;
-    const unsigned int m_windowHeight   = 1080;
+    const unsigned int m_windowWidth    = 1600;
+    const unsigned int m_windowHeight   = 900;
     const std::string  m_windowName     = "Swarm Contract Simulator Visualization";
     const unsigned int m_framerateLimit = 144;
 
     // Simulator Config
     const std::vector<data::Point> m_roomCorners = {
-        {.x = 100, .y = 100},
-        {.x = 100, .y = 900},
-        {.x = 900, .y = 900},
-        {.x = 900, .y = 100},
-        {.x = 100, .y = 100},
+        {  .x = 50,  .y = 50},
+        {  .x = 50, .y = 850},
+        {.x = 1550, .y = 850},
+        {.x = 1550,  .y = 50},
+        {  .x = 50,  .y = 50},
     };
     const std::vector<data::Point> m_targetCorners = {
-        {.x = 100, .y = 100},
-        {.x = 100, .y = 200},
-        {.x = 200, .y = 200},
-        {.x = 200, .y = 100},
-        {.x = 100, .y = 100},
+        {.x = 1550,  .y = 50},
+        {.x = 1450,  .y = 50},
+        {.x = 1450, .y = 150},
+        {.x = 1550, .y = 150},
+        {.x = 1550,  .y = 50},
     };
     const std::vector<data::MaterialStore> m_materialStores = {
         {  .material = data::Material::Red,
          .space =
          {
-         .loc  = {.x = 800, .y = 100},
+         .loc  = {.x = 50, .y = 50},
          .size = {.x = 100, .y = 100},
          }},
         {.material = data::Material::Green,
          .space =
          {
-         .loc  = {.x = 800, .y = 800},
+         .loc  = {.x = 50, .y = 750},
          .size = {.x = 100, .y = 100},
          }},
         { .material = data::Material::Blue,
          .space =
          {
-         .loc  = {.x = 100, .y = 800},
+         .loc  = {.x = 1450, .y = 750},
          .size = {.x = 100, .y = 100},
          }},
     };
     const std::vector<data::Station> m_stations = {
-        {.loc = {.x = 500, .y = 500}, .size = 50, .type = data::Station::Type::ADD}
+        { .loc = {.x = 500, .y = 450}, .size = 50, .type = data::Station::Type::MIX},
+        {.loc = {.x = 1100, .y = 450}, .size = 50, .type = data::Station::Type::ADD},
     };
     const std::vector<std::shared_ptr<agents::Agent>> m_agents = {
         std::make_shared<agents::Agent>(
             agents::Controller::create(agents::Controller::Type::Worker),
-            agents::MakeTransform(data::Point(400, 400), data::degrees(90), 40), nullptr,
+            agents::MakeTransform(data::Point(200, 200), data::degrees(90), 30), nullptr,
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(1400, 200), data::degrees(90), 30), nullptr,
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(1400, 700), data::degrees(90), 30), nullptr,
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(200, 700), data::degrees(90), 30), nullptr,
+            agents::MakeBalance(100), nullptr),
+        std::make_shared<agents::Agent>(
+            agents::Controller::create(agents::Controller::Type::Worker),
+            agents::MakeTransform(data::Point(800, 450), data::degrees(90), 30), nullptr,
             agents::MakeBalance(100), nullptr),
         std::make_shared<agents::Agent>(
             agents::Controller::create(agents::Controller::Type::Client), nullptr, nullptr,
