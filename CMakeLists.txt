@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0.3) # This is not a hard requirement, just what I have installed
+cmake_minimum_required(VERSION 3.20) 
 project(swarm_contracts_simulator LANGUAGES CXX)
 
 set(BUILD_TESTING OFF CACHE BOOL "Enable building tests")
