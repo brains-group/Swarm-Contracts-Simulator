@@ -12,7 +12,5 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_compile_options(-Wall -Wextra -Wpedantic -Werror -Wno-unused -g -fdiagnostics-color=always)
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
 add_subdirectory(src)
 
