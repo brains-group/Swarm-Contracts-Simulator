@@ -1,50 +1,51 @@
 # Swarm-Contracts-Simulator
 
-A **C++23 project** built with **CMake**, demonstrating a **visual simulation of Swarm Contracts** — a blockchain-inspired protocol for decentralized task distribution among autonomous agents.
+A **C++23 project** built with **CMake**, demonstrating a **visual simulation of Swarm Contracts**:
+a blockchain-inspired protocol for decentralized task distribution among autonomous agents.
 
 Located at: https://github.com/brains-group/Swarm-Contracts-Simulator 
 
 ---
 
-## Overview
+## Swacm Contracts
 
-The **Swarm Contracts** protocol enables **trustless cooperation** among multiple independent agents.  
+### Overview
+
+The **Swarm Contracts** protocol enables **trustless cooperation** among multiple independent agents.
+It is optimal for scenarios when:
+
+1. Independent agents identify jobs that have a cost to complete and give a reward when completed
+2. Agents have varying costs & rewards associated with each job
+3. It is difficult or infeasible to automatically verify whether a job was completed
+
 It defines three core participant types:
 
 | Role | Description |
 |------|--------------|
 | **Client** | Places orders for work to be completed |
 | **Worker** | Accepts and fulfills client orders |
-| **Adjudicator** | Judges whether work is completed successfully *(not yet implemented)* |
+| **Adjudicator** | Judges whether work is completed successfully |
 
-This simulator provides a **visual demonstration** of this concept in the context of **custom part manufacturing** — a setting where small-batch, high-variation production makes decentralized coordination especially useful.
+### Simulation
+
+Jobs are modeled by N-dimensional "Difficulty Vectors". Each dimension of the vector represents a
+dimension of difficulty of the abstract job. For example in the case of moving packages, this could map to
+the weight of the package, the distance it must be moved, and how fragile it is.
+
+Clients are external to the simulator, the focus is on the workers. So, contracts are created by the simulation
+to be claimed by workers.
+
+Every agent in the simulation has an "Ability Vector". Agents work to complete tasks by subtracting
+their ability vector from the difficulty vector of a job. The cost for a worker to work on a task is a baseline of
+1 for each item of the vector it is "working on".
 
 ---
-
-## Motivation: Custom Manufacturing
-
-Conventional manufacturing methods struggle with:
-- Small batch sizes  
-- High customization requirements  
-- Inflexible centralized production systems  
-
-**Swarm Contracts** offer an alternative:  
-> Independent robotic agents (“workers”) can bid on, collaborate over, and complete manufacturing tasks posted by clients, without centralized control or trust assumptions.
-
-This simulation models:
-- **Clients** placing *Custom Part* orders  
-- **Workers** assembling parts from *Materials*  
-- **Materials** visualized as colored squares that can be either:
-  - **Tiled** (additively combined)
-  - **Mixed** (e.g., `Red + Green → Yellow`, using RGB as the primary colors)
 
 ## Building & Running
 
 ### Requirements
-- C++23
 - CMake >= 3.20
 - A C++ compiler (GCC, Clang, and possibly MSVC)
-- SFML (if used for visualization)
 
 Tested on linux, but CMake should be cross platform
 
@@ -52,29 +53,12 @@ Tested on linux, but CMake should be cross platform
 
 ```bash
 # Configure and build
-cmake -B build
+cmake -S . -B build
 cmake --build build
 
 # Run the simulator
-./build/bin/scs_visualizer
+./build/bin/simulator
 ```
-
-You can adjust build options or add extra visualization flags in the CMake configuration.
-
----
-
-## Visualization
-
-The simulator displays:
-- **Clients** issuing part requests
-- **Workers** generating and combining materials
-- **Resulting parts** forming through mixing or tiling operations
-
-Future updates will introduce:
-- Adjudicator nodes
-- Blockchain transaction visualization
-- Multi-agent coordination strategies
-- Configurable simulation scenarios
 
 ---
 
