@@ -13,10 +13,10 @@
 #include "result.hpp"
 #include "singleton.hpp"
 
-#define LOG(LEVEL) \
-    if (false)     \
-        ;          \
-    else           \
+#define LOG(LEVEL)                                              \
+    if (LogManager::instance().getLogLevel() > LogLevel::LEVEL) \
+        ;                                                       \
+    else                                                        \
         StreamLogger(LogLevel::LEVEL, __FILE__, __LINE__, __func__)
 
 ENUM(LogLevel, uint8_t, FINE, DEBUG, INFO, WARN, ERROR, FATAL);
@@ -46,27 +46,39 @@ public:
 
     // TODO: Make this lockless / parallel?
     auto submit(LogMessage& msg) -> void {
-        std::lock_guard<std::mutex> lock(m_handlerMutex);
+        std::lock_guard<std::mutex> lock(m_mutex);
         for (auto& handler : m_handlers) { handler.handler(msg); }
     }
 
     auto addHandler(auto&& handler) -> HandlerID {
-        std::lock_guard<std::mutex> lock(m_handlerMutex);
+        std::lock_guard<std::mutex> lock(m_mutex);
         const HandlerID             newID = m_nextID++;
         m_handlers.emplace_back(
             HandlerWithID{.handler = std::forward<decltype(handler)>(handler), .id = newID});
         return newID;
     }
     auto removeHandler(HandlerID handlerID) -> void {
-        std::lock_guard<std::mutex> lock(m_handlerMutex);
+        std::lock_guard<std::mutex> lock(m_mutex);
         std::erase_if(m_handlers,
                       [handlerID](const auto& handler) -> bool { return handler.id == handlerID; });
     }
 
+    [[nodiscard]] auto getLogLevel() const -> LogLevel {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_level;
+    }
+
+    auto setLogLevel(LogLevel level) -> void {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_level = level;
+    }
+
 private:
-    std::mutex                 m_handlerMutex;
+    mutable std::mutex         m_mutex;
     HandlerID                  m_nextID = 0;
     std::vector<HandlerWithID> m_handlers;
+
+    LogLevel m_level = LogLevel::INFO;
 };
 
 class StreamLogger {

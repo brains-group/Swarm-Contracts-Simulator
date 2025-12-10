@@ -2,6 +2,9 @@
 
 // NOLINTBEGIN(cppcoreguidelines-macro-usage, bugprone-macro-parentheses)
 
+#define STRINGIFY(X) #X
+#define QUOTIFY(X)   STRINGIFY(X)
+
 // Silence an unused parameter warning
 #define UNUSED(X) (void)(X)
 
